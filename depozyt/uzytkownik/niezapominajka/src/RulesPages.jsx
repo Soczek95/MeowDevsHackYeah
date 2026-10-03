@@ -1,3 +1,5 @@
+import flowerIcon from './assets/famicons_flower-sharp.svg'; 
+
 export default function RulesPage({ onAccept, onBack, onHome }) {
 
   // Funkcja szybkiego opuszczenia strony pod ikonką kwiatka
@@ -26,15 +28,17 @@ export default function RulesPage({ onAccept, onBack, onHome }) {
             </span>
 
             {/* Przycisk z ikoną kwiatka */}
-            <button 
-              className="login-btn" 
-              aria-label="Szybkie wyjście na bezpieczną stronę" 
-              onClick={handleQuickExit}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512" fill="white">
-                <path d="M256,0C170.8,0,102.4,68.4,102.4,153.6c0,25.6,6.4,49.6,17.6,70.4C48,243.2,0,305.6,0,377.6C0,454.4,61.6,516,138.4,516c72,0,134.4-48,153.6-120c20.8,11.2,44.8,17.6,70.4,17.6C443.6,413.6,512,345.2,512,260S443.6,106.4,358.4,106.4c-24,0-46.4,6.4-65.6,16C275.2,49.6,211.2,0,256,0z M256,358.4c-56.8,0-102.4-45.6-102.4-102.4s45.6-102.4,102.4-102.4s102.4,45.6,102.4,102.4S312.8,358.4,256,358.4z"/>
-                <circle cx="256" cy="256" r="51.2" fill="#6d84fb"/>
-              </svg>
+           <button 
+                className="login-btn" 
+                aria-label="Szybkie wyjście na bezpieczną stronę" 
+                onClick={handleQuickExit}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+                >
+                <img 
+                    src={flowerIcon} 
+                    alt="Kwiatek - szybkie wyjście" 
+                    style={{ width: '32px', height: '32px', filter: 'brightness(0) invert(1)' }} 
+                />
             </button>
           </div>
         </header>
