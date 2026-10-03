@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import BaseModel
 import sqlite3
 import secrets
-from datetime import datetime, timezone
 from app.db import get_db
 from app.ledger import add_ledger_entry
 
@@ -15,7 +14,7 @@ class AdmitRequest(BaseModel):
 
 class AddSampleRequest(BaseModel):
     staff_id: str
-    type: str  # sample_id usunięte - generuje je backend
+    type: str  # np. URINE, SWAB, BLOOD
 
 class SampleEventRequest(BaseModel):
     staff_id: str
@@ -34,7 +33,6 @@ def admit_case(case_id: str, req: AdmitRequest, x_staff_token: str = Header(defa
     if case["status"] not in ["CREATED", "ADMITTED", "IN_DEPOSIT"]:
         raise HTTPException(status_code=409, detail={"error": "INVALID_TRANSITION", "message": "Nie można przyjąć tej sprawy"})
 
-    # Zmiana statusu w bazie
     db.execute("UPDATE cases SET status = 'ADMITTED', hospital_id = ? WHERE id = ?", (req.hospital_id, case_id))
     
     # Zapis do Ledgera
@@ -46,7 +44,10 @@ def admit_case(case_id: str, req: AdmitRequest, x_staff_token: str = Header(defa
 @router.post("/api/cases/{case_id}/samples")
 def add_sample(case_id: str, req: AddSampleRequest, x_staff_token: str = Header(default=None), db: sqlite3.Connection = Depends(get_db)):
     case = db.execute("SELECT status FROM cases WHERE id = ?", (case_id,)).fetchone()
-    if not case or case["status"] not in ["ADMITTED", "IN_DEPOSIT"]:
+    if not case:
+        raise HTTPException(status_code=404, detail={"error": "NOT_FOUND", "message": "Sprawa nie istnieje"})
+    
+    if case["status"] not in ["ADMITTED", "IN_DEPOSIT"]:
         raise HTTPException(status_code=409, detail={"error": "INVALID_TRANSITION", "message": "Sprawa nie jest w odpowiednim statusie"})
 
     # Generowanie unikalnego ID dla próbki i znaczników czasu
@@ -59,7 +60,11 @@ def add_sample(case_id: str, req: AddSampleRequest, x_staff_token: str = Header(
         (sample_id, case_id, req.type, "COLLECTED", now_str, now_str)
     )
 
-    # Aktualizacja sprawy na IN_DEPOSIT (jeśli to pierwsza próbka)
+    # Zapisujemy nową próbkę w bazie
+    db.execute("INSERT INTO samples (id, case_id, type, state) VALUES (?, ?, ?, ?)", 
+               (sample_id, case_id, req.type, "COLLECTED"))
+
+    # Aktualizacja statusu sprawy na IN_DEPOSIT (jeśli to pierwsza próbka)
     if case["status"] == "ADMITTED":
         db.execute("UPDATE cases SET status = 'IN_DEPOSIT' WHERE id = ?", (case_id,))
 
@@ -82,7 +87,6 @@ def sample_event(sample_id: str, req: SampleEventRequest, x_staff_token: str = H
     if not sample:
         raise HTTPException(status_code=404, detail={"error": "NOT_FOUND", "message": "Próbka nie istnieje"})
 
-    # Maszyna stanów dla fiolek: COLLECTED -> SEALED -> STORED
     valid_transitions = {
         "SEALED": ["COLLECTED"],
         "STORED": ["SEALED"]
