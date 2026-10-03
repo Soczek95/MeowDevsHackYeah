@@ -2,7 +2,6 @@ import flowerIcon from './assets/famicons_flower-sharp.svg';
 
 export default function RulesPage({ onAccept, onBack, onHome }) {
 
-  // Funkcja szybkiego opuszczenia strony pod ikonką kwiatka
   const handleQuickExit = () => {
     window.location.replace('https://www.google.com');
   };
@@ -11,8 +10,6 @@ export default function RulesPage({ onAccept, onBack, onHome }) {
     <div className="layout-container-sub">
       <div className="main-content">
         <header className="header-section">
-          
-          {/* Nazwa "niezapominajka" wraca do strony głównej */}
           <div 
             onClick={onHome} 
             style={{ cursor: 'pointer', display: 'inline-block' }}
@@ -22,13 +19,11 @@ export default function RulesPage({ onAccept, onBack, onHome }) {
           </div>
           
           <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {/* Tekst informacyjny obok kwiatka */}
             <span style={{ fontSize: '0.85rem', fontWeight: 400, opacity: 0.9, textAlign: 'right', lineHeight: '1.2' }}>
               Kliknij kwiatek,<br />aby przejść do bezpiecznej strony
             </span>
 
-            {/* Przycisk z ikoną kwiatka */}
-           <button 
+            <button 
                 className="login-btn" 
                 aria-label="Szybkie wyjście na bezpieczną stronę" 
                 onClick={handleQuickExit}
@@ -65,13 +60,15 @@ export default function RulesPage({ onAccept, onBack, onHome }) {
             Nawet jeśli nie wiesz, co teraz zrobić, nie musisz przez to przechodzić w pojedynkę. Zadzwoń pod bezpłatny i całodobowy Telefon Zaufania dla Dzieci i Młodzieży: 116 111. Czekają tam specjaliści, którzy anonimowo podpowiedzą Ci, jakie masz opcje i jak zadbać o swoje bezpieczeństwo.
           </p>
 
-          <button className="support-button rules-btn" onClick={onAccept}>
-            ROZUMIEM
-          </button>
+          <div className="rules-buttons-group">
+            <button className="support-button rules-btn" onClick={onAccept}>
+              ROZUMIEM
+            </button>
 
-          <button className="btn-text rules-back-btn" onClick={onBack}>
-            mam już sprawę
-          </button>
+            <button className="btn-text rules-back-btn" onClick={onBack}>
+              mam już sprawę
+            </button>
+          </div>
         </main>
       </div>
     </div>
