@@ -35,8 +35,8 @@ export const api = {
 	admitCase: (caseId: string, staff_id: string, hospital_id: string) =>
 		request(`/cases/${caseId}/admit`, { method: 'POST', body: JSON.stringify({ staff_id, hospital_id }) }),
 
-	addSample: (caseId: string, sample_id: string, type: string, staff_id: string) =>
-		request(`/cases/${caseId}/samples`, { method: 'POST', body: JSON.stringify({ staff_id, sample_id, type }) }),
+	addSample: (caseId: string, type: string, staff_id: string) =>
+		request(`/cases/${caseId}/samples`, { method: 'POST', body: JSON.stringify({ staff_id, type }) }),
 
 	addSampleEvent: (sampleId: string, event: string, location: string, staff_id: string) =>
 		request(`/samples/${sampleId}/events`, { method: 'POST', body: JSON.stringify({ staff_id, event, location }) }),
