@@ -1,5 +1,5 @@
 // Zakładamy, że backend działa na 8000. Jeśli Vite ma proxy, można to zmienić na puste.
-const API_URL = 'http://localhost:8000/api'
+const API_URL = '/api'
 
 async function request(endpoint: string, options: RequestInit = {}) {
 	const res = await fetch(`${API_URL}${endpoint}`, {
@@ -40,6 +40,11 @@ export const api = {
 
 	addSampleEvent: (sampleId: string, event: string, location: string, staff_id: string) =>
 		request(`/samples/${sampleId}/events`, { method: 'POST', body: JSON.stringify({ staff_id, event, location }) }),
+
+	getSampleStatus: (sampleId: string) => request(`/samples/${sampleId}`),
+
+	    // Pobiera listę wszystkich próbek w systemie
+    getAllSamples: () => request(`/samples`),
 
 	// ---- POLICJA (C) ----
 	getPolicePackage: (token: string) => request(`/release/${token}`),
