@@ -41,6 +41,8 @@ export const api = {
 	addSampleEvent: (sampleId: string, event: string, location: string, staff_id: string) =>
 		request(`/samples/${sampleId}/events`, { method: 'POST', body: JSON.stringify({ staff_id, event, location }) }),
 
+	getSampleStatus: (sampleId: string) => request(`/samples/${sampleId}`),
+
 	// ---- POLICJA (C) ----
 	getPolicePackage: (token: string) => request(`/release/${token}`),
 
