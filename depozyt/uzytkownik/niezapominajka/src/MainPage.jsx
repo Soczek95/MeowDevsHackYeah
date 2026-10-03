@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import './App.css';
 
-export default function MainPage({ onNavigate }) {
+
+export default function MainPage({ onNavigate, onOpenAccess }) {
 
   // Efekt wykrywający przewijanie strony
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function MainPage({ onNavigate }) {
             </ul>
           </nav>
           
-          <button className="login-btn" aria-label="Profil">
+          <button className="login-btn" aria-label="Profil" onClick={onOpenAccess}>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>

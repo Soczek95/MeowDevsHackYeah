@@ -447,7 +447,7 @@ html, body, #root {
 }
 
 .med-info-text {
-  font-size: 0.82rem;
+  font-size: 1.10rem;
   line-height: 1.35;
   text-align: left;
   width: 100%;
@@ -455,11 +455,12 @@ html, body, #root {
 }
 
 .warning-text {
-  font-size: 0.78rem;
+  font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 0.5px;
   color: #fff;
   margin: 2px 0;
+  width: 90%
 }
 
 .case-card-container {
@@ -649,4 +650,62 @@ html, body, #root {
 
 .download-link:hover {
   text-decoration: underline;
+}
+
+.case-access-main {
+  max-width: 600px;
+  width: 100%;
+  margin: 30px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 0 20px;
+  color: white;
+}
+
+.case-access-main h2 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.case-access-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  align-items: center;
+}
+
+.input-group-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 420px;
+  gap: 6px;
+  font-size: 1rem;
+}
+
+.input-group-row label {
+  color: white;
+  font-weight: 400;
+}
+
+.case-access-form .date-input {
+  width: 100%;
+  max-width: 420px;
+  height: 48px;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 15px;
+  font-size: 1.1rem;
+  color: #333;
+  outline: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }

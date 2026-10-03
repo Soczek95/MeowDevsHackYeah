@@ -150,7 +150,7 @@ export default function LocationPage({ onHome }) {
               }}
               title="Pobierz moją aktualną lokalizację GPS"
             >
-              📍 GPS
+               GPS
             </button>
           </div>
 
@@ -160,8 +160,8 @@ export default function LocationPage({ onHome }) {
             <div className="merged-results-box" style={{ marginTop: '10px' }}>
               <p className="med-info-text">
                 Twój najbliższy punkt opieki medycznej to: <strong>{hospitalInfo ? hospitalInfo.name : 'Wyszukiwanie...'}</strong><br />
-                Adres: <strong>{hospitalInfo ? hospitalInfo.address : ''}</strong><br />
-                Aby poprawnie zabezpieczyć próbkę moczu należy... Pamiętaj aby zabezpieczyć ubrania itp.<br />
+                Adres: <strong>{hospitalInfo ? hospitalInfo.address : ''}</strong><br /><br/>
+                Aby poprawnie zabezpieczyć próbkę moczu należy... <br/>Pamiętaj aby zabezpieczyć ubrania itp.<br />
                 Przetransportuj się do pobliskiego punktu opieki medycznej wraz z próbką moczu.<br />
                 Na miejscu ukaż kod sprawy bądź kod QR personelowi medycznemu w celu łatwej identyfikacji sprawy.<br />
                 Zapisz kod sprawy i kod QR aby móc zarządzać sprawą.<br />
