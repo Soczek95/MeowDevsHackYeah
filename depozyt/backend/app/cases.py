@@ -48,7 +48,7 @@ def create_case(request: CreateCaseRequest, db: sqlite3.Connection = Depends(get
         (case_id, key_hash, "CREATED", request.origin, now_str, expires_at_str)
     )
     db.commit()
-    return {"case_id": case_id, "key": key}
+    return {"case_id": case_id, "case_key": key}
 
 @router.get("/{case_id}/status")
 def get_case_status(case_id: str,x_case_key: str = Header(...), db: sqlite3.Connection = Depends(get_db)):
