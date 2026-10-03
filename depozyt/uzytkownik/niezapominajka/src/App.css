@@ -296,41 +296,92 @@ html, body, #root {
 ========================================= */
 
 .form-main {
+  max-width: 900px;
   width: 100%;
-  max-width: 600px;
-  margin: 40px auto 0 auto;
+  margin: 15px auto;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  text-align: center;
+  gap: 14px;
+  padding: 0 20px;
+  color: white;
+  align-items: center;
+}
+
+.date-input {
+  width: 100%;
+  max-width: 500px;
+  height: 48px;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 15px;
+  font-size: 1.05rem;
+  color: #333;
+  outline: none;
+  font-family: var(--font-body);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.form-result-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: white;
+  background: none; /* Usunięte szare tło */
+  padding: 0;
+  border: none;
+}
+
+.form-buttons-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
 }
 
 .form-main h2 {
   font-size: 1.4rem;
   font-weight: normal;
-  color: #1a1a1a;
+  color: #fff;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .date-input {
   width: 100%;
-  padding: 15px;
-  font-size: 1.1rem;
+  max-width: 500px;
+  height: 50px;
+  background-color: white;
   border: none;
-  background-color: #d1d5db; 
-  color: #1a1a1a;
-  text-align: center;
+  border-radius: 8px;
+  padding: 0 15px;
+  font-size: 1.1rem;
+  color: #333; /* Ciemny tekst wewnątrz białego pola dla czytelności */
   outline: none;
-  font-family: inherit;
+  font-family: var(--font-body);
+}
+
+.form-main {
+  max-width: 900px;
+  width: 100%;
+  margin: 20px auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 20px;
+  color: white; /* Gwarantuje, że cały tekst w sekcji będzie biały */
 }
 
 .dynamic-result {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  align-items: center;
-  margin-top: 10px;
-  animation: fadeIn 0.4s ease-out; 
+  gap: 12px;
+  color: white;
 }
 
 .result-box {
@@ -367,6 +418,117 @@ html, body, #root {
 /* =========================================
    STYLE DLA: LocationPage
 ========================================= */
+.merged-flow-main {
+  max-width: 950px;
+  width: 100%;
+  margin: 10px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  color: white;
+}
+
+.merged-flow-main h2 {
+  font-size: 1.25rem;
+  font-weight: normal;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.merged-results-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  align-items: center;
+}
+
+.med-info-text {
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-align: left;
+  width: 100%;
+  opacity: 0.95;
+}
+
+.warning-text {
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: #fff;
+  margin: 2px 0;
+}
+
+.case-card-container {
+  background-color: white;
+  color: #333;
+  width: 100%;
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.case-card-left {
+  text-align: left;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rules-container{
+  font-family: var(--font-body);
+  color: white;
+  background: linear-gradient(180deg, #6b83fe 0%, #7d90fa 50%, #9a99f0 100%);
+  min-height: 100vh; /* Rozciąga się na całą wysokość i rośnie razem z treścią */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+  -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.1);
+}
+
+.case-card-qr {
+  background-color: #cccccc;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #555;
+  border-radius: 4px;
+}
+
+.case-card-container {
+  /* Jasne, delikatnie przezroczyste tło pasujące do stylu strony */
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  width: 100%;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.download-info-link {
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
 
 .location-main {
   width: 100%;

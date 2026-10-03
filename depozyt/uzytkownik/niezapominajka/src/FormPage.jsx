@@ -26,7 +26,6 @@ export default function FormPage({ onBack, onCreate, onHome }) {
     const now = new Date();
     const diffMs = now - pastDate;
 
-    // Sprawdzenie czy data jest z przyszłości
     if (diffMs < 0) {
       setIsFuture(true);
       setIsValid(false);
@@ -83,41 +82,40 @@ export default function FormPage({ onBack, onCreate, onHome }) {
         <main className="form-main">
           <h2>Określ kiedy był ostatni moment, który pamiętasz?</h2>
           
-          {/* Standardowy HTML input typu datetime-local */}
           <input 
             type="datetime-local" 
             className="date-input"
             value={selectedDate}
             onChange={handleDateChange}
-            max={new Date().toISOString().slice(0, 16)} // Blokuje wybór przyszłości w niektórych przeglądarkach
+            max={new Date().toISOString().slice(0, 16)}
           />
 
-          {/* Komunikat o błędzie, jeśli wybrano datę z przyszłości */}
           {isFuture && (
-            <div className="dynamic-result" style={{ color: '#ffcccc' }}>
+            <div className="form-result-text" style={{ color: '#ffd1d1' }}>
               <p><strong>{timeElapsed}</strong></p>
               <p>{optionsText}</p>
             </div>
           )}
 
-          {/* Wyniki i przycisk dalej pokazują się tylko, gdy data jest poprawna i z przeszłości */}
           {isValid && !isFuture && (
-            <div className="dynamic-result">
-              <div className="result-box">
-                <p>Minęło: <strong>{timeElapsed}</strong></p>
-                <p>Oznacza to, że Twoimi opcjami są:</p>
-                <p>{optionsText}</p>
-              </div>
-              
-              <button className="support-button rules-btn" onClick={onCreate}>
-                UTWÓRZ SPRAWĘ
-              </button>
+            <div className="form-result-text">
+              <p>Minęło: <strong>{timeElapsed}</strong></p>
+              <p>Oznacza to, że Twoimi opcjami są:</p>
+              <p>{optionsText}</p>
             </div>
           )}
 
-          <button className="btn-text rules-back-btn" onClick={onBack}>
-            powrót
-          </button>
+          <div className="form-buttons-group">
+            {isValid && !isFuture && (
+              <button className="support-button rules-btn" onClick={onCreate}>
+                UTWÓRZ SPRAWĘ
+              </button>
+            )}
+
+            <button className="btn-text rules-back-btn" onClick={onBack}>
+              powrót
+            </button>
+          </div>
         </main>
       </div>
     </div>

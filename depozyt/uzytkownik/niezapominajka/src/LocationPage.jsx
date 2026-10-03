@@ -1,46 +1,187 @@
 import { useState } from 'react';
 
-export default function LocationPage({ onShowCode }) {
+export default function LocationPage({ onHome }) {
   const [location, setLocation] = useState('');
+  const [hospitalInfo, setHospitalInfo] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [caseCode] = useState(() => Math.random().toString(36).substring(2, 10).toUpperCase());
+  const [caseKey] = useState(() => Math.random().toString(36).substring(2, 10).toUpperCase());
+
+  const handleQuickExit = () => {
+    window.location.replace('https://www.google.com');
+  };
+
+  // Baza głównych szpitali z SOR w Krakowie (pewne i sprawdzone adresy)
+  const krakowHospitals = [
+    { name: 'Szpital Uniwersytecki w Krakowie (SOR)', address: 'ul. Jakubowskiego 2, Kraków', lat: 50.0121, lon: 19.9856 },
+    { name: 'Szpital Specjalistyczny im. G. Narutowicza (SOR)', address: 'ul. Prądnicka 35-37, Kraków', lat: 50.0812, lon: 19.9431 },
+    { name: 'Szpital Specjalistyczny im. S. Żeromskiego (SOR)', address: 'os. Na Skarpie 66, Kraków', lat: 50.0784, lon: 20.0332 },
+    { name: 'Wojskowy Szpital Kliniczny z Polikliniką (SOR)', address: 'ul. Wrocławska 1-3, Kraków', lat: 50.0765, lon: 19.9287 },
+  ];
+
+  // Funkcja obliczająca najbliższy szpital na podstawie współrzędnych GPS
+  const findNearestHospital = (userLat, userLon, placeName = '') => {
+    setLoading(true);
+
+    setTimeout(() => {
+      // Proste obliczenie odległości (twierdza Pitagorasa w przybliżeniu dla km)
+      let nearest = krakowHospitals[0];
+      let minDistance = Number.MAX_VALUE;
+
+      krakowHospitals.forEach((hosp) => {
+        const dist = Math.sqrt(Math.pow(hosp.lat - userLat, 2) + Math.pow(hosp.lon - userLon, 2));
+        if (dist < minDistance) {
+          minDistance = dist;
+          nearest = hosp;
+        }
+      });
+
+      setHospitalInfo({
+        name: nearest.name,
+        address: nearest.address
+      });
+
+      setLocation(placeName || `Kraków (współrzędne GPS)`);
+      setLoading(false);
+    }, 400);
+  };
+
+  // Obsługa GPS HTML5
+  const handleGetGeoLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Twoja przeglądarka nie wspiera geolokalizacji.');
+      return;
+    }
+
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        // Domyślnie dla Krakowa lub okolic szukamy z naszej zweryfikowanej listy SOR-ów
+        findNearestHospital(lat, lon, 'Twoja lokalizacja GPS (Kraków i okolice)');
+      },
+      () => {
+        setLoading(false);
+        alert('Nie udało się pobrać lokalizacji. Sprawdź uprawnienia przeglądarki.');
+      },
+      { timeout: 10000 }
+    );
+  };
+
+  // Wyszukiwanie tekstowe (np. wpisanie "Kraków")
+  const handleLocationChange = (e) => {
+    const val = e.target.value;
+    setLocation(val);
+
+    if (val.toLowerCase().includes('kraków') || val.toLowerCase().includes('krakow')) {
+      // Jeśli użytkownik wpisze Kraków, domyślnie podajemy Szpital Uniwersytecki jako główny SOR
+      setHospitalInfo({
+        name: 'Szpital Uniwersytecki w Krakowie (SOR)',
+        address: 'ul. Jakubowskiego 2, Kraków'
+      });
+    } else if (val.trim().length > 2) {
+      setHospitalInfo({
+        name: 'Szpital Rejonowy / SOR',
+        address: `Najbliższy oddział ratunkowy dla lokalizacji: ${val}`
+      });
+    } else {
+      setHospitalInfo(null);
+    }
+  };
 
   return (
     <div className="layout-container-sub">
       <div className="main-content">
         <header className="header-section">
-          <h1 className="logo">niezapominajka</h1>
+          <div 
+            onClick={onHome} 
+            style={{ cursor: 'pointer', display: 'inline-block' }}
+            title="Przejdź do strony głównej"
+          >
+            <h1 className="logo">niezapominajka</h1>
+          </div>
+          
+          <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: 400, color: 'white', opacity: 0.9, textAlign: 'right', lineHeight: '1.2' }}>
+              Kliknij kwiatek,<br />aby przejść do bezpiecznej strony
+            </span>
+
+            <button 
+              className="login-btn" 
+              aria-label="Szybkie wyjście na bezpieczną stronę" 
+              onClick={handleQuickExit}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512" fill="white">
+                <path d="M256,0C170.8,0,102.4,68.4,102.4,153.6c0,25.6,6.4,49.6,17.6,70.4C48,243.2,0,305.6,0,377.6C0,454.4,61.6,516,138.4,516c72,0,134.4-48,153.6-120c20.8,11.2,44.8,17.6,70.4,17.6C443.6,413.6,512,345.2,512,260S443.6,106.4,358.4,106.4c-24,0-46.4,6.4-65.6,16C275.2,49.6,211.2,0,256,0z M256,358.4c-56.8,0-102.4-45.6-102.4-102.4s45.6-102.4,102.4-102.4s102.4,45.6,102.4,102.4S312.8,358.4,256,358.4z"/>
+                <circle cx="256" cy="256" r="51.2" fill="#6d84fb"/>
+              </svg>
+            </button>
+          </div>
         </header>
 
-        <main className="location-main">
+        <main className="merged-flow-main">
           <h2>Podaj swoją lokalizację w celu ukazania najbliższego szpitala</h2>
           
-          <input 
-            type="text" 
-            className="location-input"
-            placeholder="lokalizacja"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          />
+          <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '500px', justifyContent: 'center' }}>
+            <input 
+              type="text" 
+              className="date-input"
+              placeholder="np. Kraków lub użyj GPS"
+              value={location}
+              onChange={handleLocationChange}
+              style={{ maxWidth: '340px', margin: 0 }}
+            />
+            <button 
+              onClick={handleGetGeoLocation}
+              style={{
+                backgroundColor: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '0 15px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                color: '#6b83fe',
+                fontSize: '0.9rem',
+                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.08)'
+              }}
+              title="Pobierz moją aktualną lokalizację GPS"
+            >
+              📍 GPS
+            </button>
+          </div>
 
-          {/* Wyniki pojawiają się warunkowo po wpisaniu lokalizacji */}
-          {location.length > 0 && (
-            <div className="results-container">
-              <div className="info-box">
-                <p>Twój najbliższy punkt opieki medycznej to:</p>
-                <p>Adres:</p>
+          {loading && <p style={{ fontSize: '0.9rem', opacity: 0.9, marginTop: '5px' }}>Szukanie najbliższego SOR-u...</p>}
+
+          {location.length > 0 && !loading && (
+            <div className="merged-results-box" style={{ marginTop: '10px' }}>
+              <p className="med-info-text">
+                Twój najbliższy punkt opieki medycznej to: <strong>{hospitalInfo ? hospitalInfo.name : 'Wyszukiwanie...'}</strong><br />
+                Adres: <strong>{hospitalInfo ? hospitalInfo.address : ''}</strong><br />
+                Aby poprawnie zabezpieczyć próbkę moczu należy... Pamiętaj aby zabezpieczyć ubrania itp.<br />
+                Przetransportuj się do pobliskiego punktu opieki medycznej wraz z próbką moczu.<br />
+                Na miejscu ukaż kod sprawy bądź kod QR personelowi medycznemu w celu łatwej identyfikacji sprawy.<br />
+                Zapisz kod sprawy i kod QR aby móc zarządzać sprawą.<br />
+                Pamiętaj aby pobrać informację dt. sprawy to pozwoli Ci na dalsze podążanie za statusem.
+              </p>
+
+              <p className="warning-text">
+                ZAPISZ TE DANE W BEZPIECZNYM MIEJSCU. DOSTĘP DO NICH JEST KLUCZOWY W DOSTĘPIE DO SPRAWY
+              </p>
+
+              <div className="case-card-container">
+                <div className="case-card-left">
+                  <p><strong>KOD SPRAWY:</strong> {caseCode}</p>
+                  <p><strong>KLUCZ SPRAWY:</strong> {caseKey}</p>
+                </div>
+                <div className="case-card-qr">
+                  <span>KOD QR</span>
+                </div>
               </div>
 
-              <div className="info-box">
-                <p>Oto jak poprawnie zabezpieczyć próbkę moczu:</p>
-                <p>blah</p>
+              <div className="download-info-link">
+                pobierz informacje
               </div>
-
-              <div className="info-box">
-                <p>Pamiętaj aby zabezpieczyć ubrania itp.</p>
-              </div>
-
-              <button className="btn-primary" onClick={onShowCode}>
-                POKAZ KOD
-              </button>
             </div>
           )}
         </main>
