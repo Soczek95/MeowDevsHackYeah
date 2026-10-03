@@ -43,6 +43,9 @@ export const api = {
 
 	getSampleStatus: (sampleId: string) => request(`/samples/${sampleId}`),
 
+	// Pobiera listę wszystkich próbek w systemie
+	getAllSamples: () => request(`/samples`),
+
 	// ---- POLICJA (C) ----
 	getPolicePackage: (token: string) => request(`/release/${token}`),
 

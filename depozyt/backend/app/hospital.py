@@ -113,3 +113,14 @@ def get_sample_status(sample_id: str, db: sqlite3.Connection = Depends(get_db)):
         raise HTTPException(status_code=404, detail={"error": "NOT_FOUND", "message": "Próbka nie istnieje"})
     
     return dict(sample)
+
+@router.get("/api/samples")
+def get_all_samples(db: sqlite3.Connection = Depends(get_db)):
+    # Pobieramy wszystkie rekordy z tabeli samples, posortowane od najnowszych
+    samples = db.execute("""
+        SELECT id, case_id, type, state, created_at, updated_at 
+        FROM samples 
+        ORDER BY created_at DESC
+    """).fetchall()
+    
+    return [dict(sample) for sample in samples]
