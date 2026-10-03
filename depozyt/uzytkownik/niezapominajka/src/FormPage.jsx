@@ -1,101 +1,121 @@
 import { useState } from 'react';
 
-export default function FormPage({ onBack, onCreate }) {
-  const [inputValue, setInputValue] = useState('');
+export default function FormPage({ onBack, onCreate, onHome }) {
+  const [selectedDate, setSelectedDate] = useState('');
   const [timeElapsed, setTimeElapsed] = useState('');
   const [optionsText, setOptionsText] = useState('');
-  const [isValidDate, setIsValidDate] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+  const [isFuture, setIsFuture] = useState(false);
+
+  // Funkcja szybkiego opuszczenia strony na bezpieczną witrynę
+  const handleQuickExit = () => {
+    window.location.replace('https://www.google.com');
+  };
 
   const handleDateChange = (e) => {
-    let val = e.target.value;
-    
-    // Maska: wyciągamy same cyfry i układamy je w pożądany format
-    const raw = val.replace(/\D/g, ''); 
-    let formatted = raw;
+    const val = e.target.value;
+    setSelectedDate(val);
 
-    if (raw.length > 2) formatted = `${raw.slice(0, 2)}/${raw.slice(2)}`;
-    if (raw.length > 4) formatted = `${formatted.slice(0, 5)}/${raw.slice(4)}`;
-    if (raw.length > 8) formatted = `${formatted.slice(0, 10)} ${raw.slice(8)}`;
-    if (raw.length > 10) formatted = `${formatted.slice(0, 13)}:${raw.slice(10)}`;
-    
-    // Ucinamy przy maksymalnej długości (DD/MM/RRRR HH:MM)
-    formatted = formatted.slice(0, 16); 
-    setInputValue(formatted);
+    if (!val) {
+      setIsValid(false);
+      setIsFuture(false);
+      return;
+    }
 
-    // Jeśli użytkownik wpisał kompletne 12 cyfr, robimy obliczenia
-    if (raw.length === 12) {
-      const day = parseInt(raw.slice(0, 2), 10);
-      const month = parseInt(raw.slice(2, 4), 10);
-      const year = parseInt(raw.slice(4, 8), 10);
-      const hour = parseInt(raw.slice(8, 10), 10);
-      const minute = parseInt(raw.slice(10, 12), 10);
+    const pastDate = new Date(val);
+    const now = new Date();
+    const diffMs = now - pastDate;
 
-      // Prosta walidacja czy data w ogóle istnieje (np. czy miesiąc to nie 13)
-      if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
-        const pastDate = new Date(year, month - 1, day, hour, minute);
-        const now = new Date();
-        const diffMs = now - pastDate;
+    // Sprawdzenie czy data jest z przyszłości
+    if (diffMs < 0) {
+      setIsFuture(true);
+      setIsValid(false);
+      setTimeElapsed("Czas z przyszłości");
+      setOptionsText("Wpisana data i godzina jeszcze nie nadeszły. Wybierz poprawny moment z przeszłości.");
+      return;
+    }
 
-        if (diffMs < 0) {
-          setIsValidDate(true);
-          setTimeElapsed("Czas z przyszłości");
-          setOptionsText("Wpisana godzina jeszcze nie nadeszła. Wpisz poprawną datę z przeszłości.");
-          return;
-        }
+    setIsFuture(false);
+    setIsValid(true);
 
-        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-        const diffDays = Math.floor(diffHours / 24);
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHours / 24);
 
-        setIsValidDate(true);
-        if (diffHours < 72) {
-          setTimeElapsed(`${diffHours} godzin`);
-          setOptionsText("Jesteś w oknie do 72 godzin. Możesz udać się do szpitala w celu zabezpieczenia śladów medycznych i ewentualnie zgłosić sprawę organom ścigania.");
-        } else {
-          setTimeElapsed(`${diffDays} dni`);
-          setOptionsText("Od zdarzenia minęło ponad 72 godziny. Zabezpieczenie śladów biologicznych może być trudne, ale nadal masz prawo zgłosić sprawę i szukać wsparcia psychologicznego lub prawnego.");
-        }
-      } else {
-        setIsValidDate(false);
-      }
+    if (diffHours < 72) {
+      setTimeElapsed(`${diffHours} godzin`);
+      setOptionsText("Jesteś w oknie do 72 godzin. Możesz udać się do szpitala w celu zabezpieczenia śladów medycznych i ewentualnie zgłosić sprawę organom ścigania.");
     } else {
-      setIsValidDate(false);
+      setTimeElapsed(`${diffDays} dni`);
+      setOptionsText("Od zdarzenia minęło ponad 72 godziny. Zabezpieczenie śladów biologicznych może być trudne, ale nadal masz prawo zgłosić sprawę i szukać wsparcia psychologicznego lub prawnego.");
     }
   };
 
   return (
-    <div className="layout-container">
+    <div className="layout-container-sub">
       <div className="main-content">
         <header className="header-section">
-          <h1 className="logo">niezapominajka</h1>
+          <div 
+            onClick={onHome} 
+            style={{ cursor: 'pointer', display: 'inline-block' }}
+            title="Przejdź do strony głównej"
+          >
+            <h1 className="logo">niezapominajka</h1>
+          </div>
+          
+          <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 400, color: 'white', opacity: 0.9, textAlign: 'right', lineHeight: '1.2' }}>
+              Kliknij kwiatek,<br />aby przejść do bezpiecznej strony
+            </span>
+
+            <button 
+              className="login-btn" 
+              aria-label="Szybkie wyjście na bezpieczną stronę" 
+              onClick={handleQuickExit}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512" fill="white">
+                <path d="M256,0C170.8,0,102.4,68.4,102.4,153.6c0,25.6,6.4,49.6,17.6,70.4C48,243.2,0,305.6,0,377.6C0,454.4,61.6,516,138.4,516c72,0,134.4-48,153.6-120c20.8,11.2,44.8,17.6,70.4,17.6C443.6,413.6,512,345.2,512,260S443.6,106.4,358.4,106.4c-24,0-46.4,6.4-65.6,16C275.2,49.6,211.2,0,256,0z M256,358.4c-56.8,0-102.4-45.6-102.4-102.4s45.6-102.4,102.4-102.4s102.4,45.6,102.4,102.4S312.8,358.4,256,358.4z"/>
+                <circle cx="256" cy="256" r="51.2" fill="#6d84fb"/>
+              </svg>
+            </button>
+          </div>
         </header>
 
         <main className="form-main">
           <h2>Określ kiedy był ostatni moment, który pamiętasz?</h2>
           
-          {/* Jedno, normalne pole tekstowe z maską */}
+          {/* Standardowy HTML input typu datetime-local */}
           <input 
-            type="text" 
+            type="datetime-local" 
             className="date-input"
-            placeholder="DD/MM/RRRR GG:MM"
-            value={inputValue}
+            value={selectedDate}
             onChange={handleDateChange}
+            max={new Date().toISOString().slice(0, 16)} // Blokuje wybór przyszłości w niektórych przeglądarkach
           />
 
-          {isValidDate && (
+          {/* Komunikat o błędzie, jeśli wybrano datę z przyszłości */}
+          {isFuture && (
+            <div className="dynamic-result" style={{ color: '#ffcccc' }}>
+              <p><strong>{timeElapsed}</strong></p>
+              <p>{optionsText}</p>
+            </div>
+          )}
+
+          {/* Wyniki i przycisk dalej pokazują się tylko, gdy data jest poprawna i z przeszłości */}
+          {isValid && !isFuture && (
             <div className="dynamic-result">
               <div className="result-box">
-                <p>Mineło: <strong>{timeElapsed}</strong> czasu</p>
-                <p>Oznacza to, że twoimi opcjami są:</p>
+                <p>Minęło: <strong>{timeElapsed}</strong></p>
+                <p>Oznacza to, że Twoimi opcjami są:</p>
                 <p>{optionsText}</p>
               </div>
               
-              <button className="btn-primary" onClick={onCreate}>
+              <button className="support-button rules-btn" onClick={onCreate}>
                 UTWÓRZ SPRAWĘ
               </button>
             </div>
           )}
 
-          <button className="btn-text" onClick={onBack}>
+          <button className="btn-text rules-back-btn" onClick={onBack}>
             powrót
           </button>
         </main>

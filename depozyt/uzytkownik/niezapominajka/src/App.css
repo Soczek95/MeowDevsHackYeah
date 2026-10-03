@@ -6,9 +6,9 @@ html, body, #root {
   padding: 0 !important;
   width: 100% !important;
   max-width: none !important;
-  min-height: 100vh !important;
+  min-height: 100% !important;
   box-sizing: border-box;
-  overflow-x: hidden; /* Zapobiega pojawieniu się paska przewijania na dole */
+  /* Usuwamy overflow: hidden stąd, żeby MainPage mogła się scrollować */
 }
 
 * {
@@ -22,7 +22,7 @@ html, body, #root {
   --font-body: 'Lato', sans-serif;
 }
 
-/* W layout-container upewnij się, że masz width: 100% */
+/* Styl dla strony głównej - pozwala na scrollowanie (min-height i automatyczna wysokość) */
 .layout-container {
   font-family: var(--font-body);
   color: white;
@@ -34,6 +34,22 @@ html, body, #root {
   text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
   -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.1);
 }
+
+/* Styl dla podstron (Rules, Form, Location, Code) - blokuje scroll i zamyka w 100vh */
+.layout-container-sub {
+  font-family: var(--font-body);
+  color: white;
+  background: linear-gradient(180deg, #4967fb 0%, #7d90fa 50%, #a799f0 100%);
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+  -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Blokuje przewijanie tylko na podstronach */
+}
+
+
 /* =========================================
    STYLE DLA: MainPage
 ========================================= */
@@ -42,7 +58,7 @@ html, body, #root {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
+  padding: 10px 40px; 
   width: 100%;
 }
 
@@ -82,7 +98,7 @@ html, body, #root {
 
 /* GŁÓWNY OBSZAR */
 .main-content {
-  flex-grow: 0;
+  flex-grow: 1;
   padding: 20px 40px 60px 40px;
   display: flex;
   flex-direction: column;
@@ -92,7 +108,7 @@ html, body, #root {
 .hero-section {
   text-align: center;
   margin-top: 50px;
-  margin-bottom: 20px !important; /* Wymuszenie małego marginesu na dole */
+  margin-bottom: 20px !important; 
   padding-bottom: 0px !important;
   display: flex;
   flex-direction: column;
@@ -120,7 +136,7 @@ html, body, #root {
   font-size: 1.15rem;
   line-height: 1.6;
   font-weight: 400;
-  margin-bottom: 30px; /* Odstęp między tekstem a przyciskiem */
+  margin-bottom: 30px; 
   max-width: 1100px;
 }
 
@@ -136,14 +152,10 @@ html, body, #root {
   line-height: 1.3;
   cursor: pointer;
   margin-top: 45px;
-  margin-bottom: 20px; /* Odstęp między przyciskiem a tekstem o winie */
-
+  margin-bottom: 20px; 
 
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Delikatny, bazowy cienień */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  
   text-shadow: none;
   -webkit-text-stroke: 0;
 }
@@ -157,29 +169,21 @@ html, body, #root {
   max-width: 4100px;
   margin: 0 auto;
   margin-top: 45px;
-  margin-bottom: 60px; /* To jest Twoja pożądana przerwa (czerwona strefa) przed dolnymi sekcjami */
+  margin-bottom: 60px; 
 }
 
 .support-button:hover {
-  /* Przycisk lekko unosi się w górę */
   transform: translateY(-4px);
-  
-  /* Tło staje się idealnie białe lub delikatnie lśniące */
   background-color: #ffffff;
-  
-  /* Cień staje się głębszy i rozproszony, dając efekt "uniesienia nad kartką" */
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
 .support-button:active {
-  /* Efekt wciśnięcia po kliknięciu */
   transform: translateY(-1px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
-
 /* SEKCJE TEKSTOWE */
-/* Sekcje informacyjne domyślnie schowane, ale zachowane w kodzie */
 .info-sections {
   width: 100%;
   max-width: 1000px;
@@ -188,14 +192,12 @@ html, body, #root {
   gap: 60px;
   text-align: left;
   
-  /* Ukrywamy sekcję na start */
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  pointer-events: none; /* Żeby nie dało się w to kliknąć, jak jest niewidoczne */
+  pointer-events: none; 
 }
 
-/* Kiedy użytkownik zjedzie niżej, klasa 'visible' (lub stan) odsłoni sekcję */
 .info-sections.visible {
   opacity: 1;
   transform: translateY(0);
@@ -226,6 +228,70 @@ html, body, #root {
 }
 
 /* =========================================
+   STYLE DLA: RulesPages
+========================================= */
+
+.rules-content-custom {
+  max-width: 1100px;
+  width: 100%;
+  margin: 10px auto 40px auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 14px; 
+  padding: 0 20px;
+}
+
+.rules-content-custom h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  font-family: var(--font-body);
+}
+
+.rules-intro, .rules-exceptions-title, .rules-text-secondary {
+  font-size: 0.95rem; 
+  line-height: 1.5;
+}
+
+.rules-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.rules-text-minor {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  opacity: 0.95;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+.rules-btn {
+  width: auto !important;
+  min-width: 250px;
+  max-width: 400px;
+  align-self: center;
+  padding: 15px 50px !important;
+  font-size: 1.4rem !important;
+  margin-top: 30px !important;
+  margin-bottom: 12px !important;
+}
+
+.rules-back-btn {
+  align-self: center;
+  font-size: 1rem;
+  margin-top: 0 !important;
+  margin-bottom: 30px;
+}
+
+/* =========================================
    STYLE DLA: FormPage
 ========================================= */
 
@@ -246,30 +312,27 @@ html, body, #root {
   margin-bottom: 10px;
 }
 
-/* Pole do wpisywania daty */
 .date-input {
   width: 100%;
   padding: 15px;
   font-size: 1.1rem;
   border: none;
-  background-color: #d1d5db; /* Szare tło z projektu */
+  background-color: #d1d5db; 
   color: #1a1a1a;
   text-align: center;
   outline: none;
   font-family: inherit;
 }
 
-/* Sekcja pojawiająca się warunkowo */
 .dynamic-result {
   display: flex;
   flex-direction: column;
   gap: 30px;
   align-items: center;
   margin-top: 10px;
-  animation: fadeIn 0.4s ease-out; /* Delikatne pojawienie się */
+  animation: fadeIn 0.4s ease-out; 
 }
 
-/* Szare okienko z wynikiem */
 .result-box {
   background-color: #d1d5db;
   padding: 30px;
@@ -283,11 +346,10 @@ html, body, #root {
   margin-bottom: 5px;
 }
 
-/* Zwykły tekstowy przycisk (powrót) */
 .btn-text {
   background: none;
   border: none;
-  color: #1a1a1a;
+  color: #fff;
   font-size: 1.1rem;
   cursor: pointer;
   margin-top: 10px;
@@ -324,7 +386,7 @@ html, body, #root {
 }
 
 .location-input {
-  width: 80%; /* Pole wejściowe jest nieco węższe niż wyniki poniżej */
+  width: 80%; 
   margin: 0 auto;
   padding: 15px;
   font-size: 1.1rem;
@@ -403,7 +465,6 @@ html, body, #root {
   color: #1a1a1a;
 }
 
-/* Ciemniejszy kwadrat udający kod QR */
 .qr-placeholder {
   background-color: #9ca3af;
   width: 130px;

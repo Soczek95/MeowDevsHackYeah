@@ -17,7 +17,8 @@ export default function App() {
     return (
       <RulesPage 
         onAccept={() => setCurrentView('formularz')} 
-        onBack={() => setCurrentView('main')} 
+        onBack={() => setCurrentView('main')}
+        onHome={() => setCurrentView('main')} // <-- Dopisz to, jeśli jeszcze tego nie ma
       />
     );
   }

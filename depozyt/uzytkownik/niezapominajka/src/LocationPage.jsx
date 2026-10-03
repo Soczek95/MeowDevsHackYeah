@@ -4,7 +4,7 @@ export default function LocationPage({ onShowCode }) {
   const [location, setLocation] = useState('');
 
   return (
-    <div className="layout-container">
+    <div className="layout-container-sub">
       <div className="main-content">
         <header className="header-section">
           <h1 className="logo">niezapominajka</h1>
