@@ -1,0 +1,59 @@
+{
+  "staff": [
+    { "id": "ST-A41", "name": "Pielęgniarka #A41", "hospital_id": "H-DEMO" },
+    { "id": "ST-B07", "name": "Lekarz #B07", "hospital_id": "H-DEMO" }
+  ],
+  "hospitals": [
+    { "id": "H-DEMO", "name": "Szpital Demo", "lat": 52.2297, "lon": 21.0122, "has_sor": true, "in_program": true }
+  ],
+  "venues": [
+    { "id": "V-DEMO-1", "name": "Klub Demo 1" },
+    { "id": "V-DEMO-2", "name": "Klub Demo 2" },
+    { "id": "V-DEMO-3", "name": "Klub Demo 3" },
+    { "id": "V-DEMO-4", "name": "Klub Demo 4" },
+    { "id": "V-DEMO-5", "name": "Klub Demo 5" }
+  ],
+  "cases": [
+    {
+      "id": "DP-DEMO-01", "case_key": "DEMO-KEY1-AAAA-BBBB", "status": "IN_DEPOSIT", "hospital_id": "H-DEMO",
+      "samples": [ { "id": "S-0193", "type": "URINE" }, { "id": "S-0194", "type": "SWAB" } ],
+      "events": [
+        { "event": "CASE_CREATED", "actor_id": "SYSTEM", "ts": "2026-09-03T13:58:00Z" },
+        { "event": "ADMITTED", "actor_id": "ST-A41", "ts": "2026-09-03T14:05:00Z" },
+        { "event": "COLLECTED", "sample_id": "S-0193", "actor_id": "ST-B07", "location": "SOR, gabinet 3", "ts": "2026-09-03T14:20:00Z" },
+        { "event": "COLLECTED", "sample_id": "S-0194", "actor_id": "ST-B07", "location": "SOR, gabinet 3", "ts": "2026-09-03T14:24:00Z" },
+        { "event": "SEALED", "sample_id": "S-0193", "actor_id": "ST-B07", "location": "SOR, gabinet 3", "ts": "2026-09-03T14:32:10Z" },
+        { "event": "SEALED", "sample_id": "S-0194", "actor_id": "ST-B07", "location": "SOR, gabinet 3", "ts": "2026-09-03T14:33:00Z" },
+        { "event": "STORED", "sample_id": "S-0193", "actor_id": "ST-A41", "location": "Magazyn depozytu, lodówka 2", "ts": "2026-09-03T14:50:00Z" },
+        { "event": "STORED", "sample_id": "S-0194", "actor_id": "ST-A41", "location": "Magazyn depozytu, lodówka 2", "ts": "2026-09-03T14:51:00Z" }
+      ]
+    },
+    {
+      "id": "DP-DEMO-02", "case_key": "DEMO-KEY2-AAAA-BBBB", "status": "RELEASED", "hospital_id": "H-DEMO",
+      "release_token": "demo02",
+      "samples": [ { "id": "S-0190", "type": "URINE" } ],
+      "events": [
+        { "event": "CASE_CREATED", "actor_id": "SYSTEM", "ts": "2026-08-20T07:10:00Z" },
+        { "event": "ADMITTED", "actor_id": "ST-A41", "ts": "2026-08-20T07:25:00Z" },
+        { "event": "COLLECTED", "sample_id": "S-0190", "actor_id": "ST-B07", "location": "SOR, gabinet 5", "ts": "2026-08-20T07:40:00Z" },
+        { "event": "SEALED", "sample_id": "S-0190", "actor_id": "ST-B07", "location": "SOR, gabinet 5", "ts": "2026-08-20T07:45:00Z" },
+        { "event": "STORED", "sample_id": "S-0190", "actor_id": "ST-A41", "location": "Magazyn depozytu, lodówka 1", "ts": "2026-08-20T08:05:00Z" },
+        { "event": "DECISION_RELEASE", "actor_id": "SYSTEM", "ts": "2026-09-28T18:12:00Z" },
+        { "event": "ACCESSED", "actor_id": "SYSTEM", "ts": "2026-09-29T09:03:00Z", "data": { "token": "demo02" } }
+      ]
+    },
+    {
+      "id": "DP-DEMO-03", "case_key": "DEMO-KEY3-AAAA-BBBB", "status": "DESTROY_PENDING", "hospital_id": "H-DEMO",
+      "destroy_after_days_from_reset": 2,
+      "samples": [ { "id": "S-0191", "type": "SWAB" } ],
+      "events": [
+        { "event": "CASE_CREATED", "actor_id": "SYSTEM", "ts": "2026-08-28T21:40:00Z" },
+        { "event": "ADMITTED", "actor_id": "ST-A41", "ts": "2026-08-28T21:55:00Z" },
+        { "event": "COLLECTED", "sample_id": "S-0191", "actor_id": "ST-B07", "location": "SOR, gabinet 3", "ts": "2026-08-28T22:10:00Z" },
+        { "event": "SEALED", "sample_id": "S-0191", "actor_id": "ST-B07", "location": "SOR, gabinet 3", "ts": "2026-08-28T22:14:00Z" },
+        { "event": "STORED", "sample_id": "S-0191", "actor_id": "ST-A41", "location": "Magazyn depozytu, lodówka 2", "ts": "2026-08-28T22:30:00Z" },
+        { "event": "DECISION_DESTROY", "actor_id": "SYSTEM", "ts": "2026-09-05T10:00:00Z" }
+      ]
+    }
+  ]
+}
