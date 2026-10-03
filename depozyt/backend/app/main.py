@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db import init_db
 from app.demo import router as demo_router
+from app.cases import router as cases_router
+from app.ledger import router as ledger_router
+from app.hospital import router as hospital_router
+from app.police import router as police_router
 
 # Inicjalizacja bazy przy starcie
 init_db()
@@ -18,6 +22,12 @@ app.add_middleware(
 )
 
 app.include_router(demo_router)
+app.include_router(cases_router)
+app.include_router(ledger_router)
+app.include_router(hospital_router)
+app.include_router(police_router)
+
+
 
 @app.get("/health")
 def health_check():
