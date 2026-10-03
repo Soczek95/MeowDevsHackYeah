@@ -1,0 +1,33 @@
+{
+	"staff": [
+		{ "id": "ST-A41", "name": "Pielęgniarka Anna", "hospital_id": "H-DEMO", "public_key": "", "private_key": "" },
+		{ "id": "ST-B07", "name": "Lekarz Jan", "hospital_id": "H-DEMO", "public_key": "", "private_key": "" },
+		{ "id": "SYSTEM", "name": "Serwer Depozyt", "hospital_id": "", "public_key": "", "private_key": "" }
+	],
+	"cases": [
+		{
+			"id": "DP-DEMO-01",
+			"case_key": "DEMO-KEY1-AAAA-BBBB",
+			"status": "IN_DEPOSIT",
+			"origin": "hospital",
+			"hospital_id": "H-DEMO",
+			"created_at": "2026-09-03T14:00:00Z",
+			"expires_at": "2027-09-03T14:00:00Z",
+			"samples": [
+				{ "id": "S-0193", "type": "URINE", "state": "STORED" },
+				{ "id": "S-0194", "type": "SWAB", "state": "STORED" }
+			],
+			"events": [
+				{ "event": "ADMITTED", "actor_id": "ST-A41", "ts": "2026-09-03T14:05:00Z" },
+				{ "event": "COLLECTED", "sample_id": "S-0193", "actor_id": "ST-B07", "ts": "2026-09-03T14:20:00Z" },
+				{
+					"event": "SEALED",
+					"sample_id": "S-0193",
+					"actor_id": "ST-B07",
+					"location": "SOR, gabinet 3",
+					"ts": "2026-09-03T14:32:10Z"
+				}
+			]
+		}
+	]
+}
