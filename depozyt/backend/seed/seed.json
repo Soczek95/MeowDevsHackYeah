@@ -57,7 +57,7 @@
 			"expires_at": "2027-09-15T09:30:00Z",
 			"samples": [
 				{ "id": "S-0205", "type": "KREW", "state": "ZMAGAZYNOWANA" },
-				{ "id": "S-0206", "type": "ODZIEZ", "state": "ZMAGAZYNOWANA" }
+				{ "id": "S-0206", "type": "WYMAZ", "state": "ZMAGAZYNOWANA" }
 			],
 			"events": [
 				{ "event": "PRZYJETA", "actor_id": "ST-A41", "ts": "2026-09-15T10:00:00Z" },
