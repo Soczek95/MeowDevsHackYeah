@@ -107,7 +107,7 @@ def make_decision(case_id: str, req: DecisionRequest, x_case_key: str = Header(.
     
     # 2. PRZEDŁUŻENIE DEPOZYTU O 180 DNI
     elif req.decision == "EXTEND":
-        current_expires = datetime.strptime(case["expires_at"], "%Y-%m-%d %H:%M:%S")
+        current_expires = datetime.strptime(case["expires_at"].replace("T", " ").replace("Z", ""), "%Y-%m-%d %H:%M:%S")
         new_expires = current_expires + timedelta(days=180)
         new_expires_str = new_expires.strftime("%Y-%m-%d %H:%M:%S")
         
