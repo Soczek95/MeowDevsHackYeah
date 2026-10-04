@@ -30,23 +30,23 @@ def admit_case(case_id: str, req: AdmitRequest, x_staff_token: str = Header(defa
     if not case:
         raise HTTPException(status_code=404, detail={"error": "NOT_FOUND", "message": "Sprawa nie istnieje"})
     
-    # Maszyna stanów: Tylko sprawy CREATED mogą być przyjęte przez szpital
-    if case["status"] not in ["CREATED", "ADMITTED", "IN_DEPOSIT"]:
+    # Maszyna stanów: Tylko sprawy UTWORZONA, PRZYJETA lub W_DEPOZYCIE są prawidłowe dla szpitala
+    if case["status"] not in ["UTWORZONA", "PRZYJETA", "W_DEPOZYCIE"]:
         raise HTTPException(status_code=409, detail={"error": "INVALID_TRANSITION", "message": "Nie można przyjąć tej sprawy"})
 
     # Zmiana statusu w bazie
-    db.execute("UPDATE cases SET status = 'ADMITTED', hospital_id = ? WHERE id = ?", (req.hospital_id, case_id))
+    db.execute("UPDATE cases SET status = 'PRZYJETA', hospital_id = ? WHERE id = ?", (req.hospital_id, case_id))
     
     # Zapis do Ledgera
-    entry = add_ledger_entry(db, case_id=case_id, event="ADMITTED", actor_id=req.staff_id)
+    entry = add_ledger_entry(db, case_id=case_id, event="PRZYJETA", actor_id=req.staff_id)
     
-    return {"status": "ADMITTED", "entry_seq": entry["seq"]}
+    return {"status": "PRZYJETA", "entry_seq": entry["seq"]}
 
 
 @router.post("/api/cases/{case_id}/samples")
 def add_sample(case_id: str, req: AddSampleRequest, x_staff_token: str = Header(default=None), db: sqlite3.Connection = Depends(get_db)):
     case = db.execute("SELECT status FROM cases WHERE id = ?", (case_id,)).fetchone()
-    if not case or case["status"] not in ["ADMITTED", "IN_DEPOSIT"]:
+    if not case or case["status"] not in ["PRZYJETA", "W_DEPOZYCIE"]:
         raise HTTPException(status_code=409, detail={"error": "INVALID_TRANSITION", "message": "Sprawa nie jest w odpowiednim statusie"})
 
     # Generowanie unikalnego ID dla próbki i znaczników czasu
@@ -56,25 +56,24 @@ def add_sample(case_id: str, req: AddSampleRequest, x_staff_token: str = Header(
     # Zapisujemy próbkę wraz z datą utworzenia i modyfikacji
     db.execute(
         "INSERT INTO samples (id, case_id, type, state, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", 
-        (sample_id, case_id, req.type, "COLLECTED", now_str, now_str)
+        (sample_id, case_id, req.type, "POBRANA", now_str, now_str)
     )
 
-    # Aktualizacja sprawy na IN_DEPOSIT (jeśli to pierwsza próbka)
-    if case["status"] == "ADMITTED":
-        db.execute("UPDATE cases SET status = 'IN_DEPOSIT' WHERE id = ?", (case_id,))
+    # Aktualizacja sprawy na W_DEPOZYCIE (jeśli to pierwsza próbka)
+    if case["status"] == "PRZYJETA":
+        db.execute("UPDATE cases SET status = 'W_DEPOZYCIE' WHERE id = ?", (case_id,))
 
     # Zapis do Ledgera
-    entry = add_ledger_entry(db, case_id=case_id, event="COLLECTED", actor_id=req.staff_id, sample_id=sample_id)
+    entry = add_ledger_entry(db, case_id=case_id, event="POBRANA", actor_id=req.staff_id, sample_id=sample_id)
     
     return {
         "status": "SUCCESS", 
         "sample_id": sample_id, 
-        "state": "COLLECTED", 
+        "state": "POBRANA", 
         "created_at": now_str,
         "updated_at": now_str,
         "entry_seq": entry["seq"]
     }
-
 
 
 @router.post("/api/samples/{sample_id}/events")
@@ -84,8 +83,8 @@ def sample_event(sample_id: str, req: SampleEventRequest, x_staff_token: str = H
         raise HTTPException(status_code=404, detail={"error": "NOT_FOUND", "message": "Próbka nie istnieje"})
 
     valid_transitions = {
-        "SEALED": ["COLLECTED"],
-        "STORED": ["SEALED"]
+        "ZAPLOMBOWANA": ["POBRANA"],
+        "ZMAGAZYNOWANA": ["ZAPLOMBOWANA"]
     }
 
     if req.event not in valid_transitions or sample["state"] not in valid_transitions[req.event]:

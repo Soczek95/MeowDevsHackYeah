@@ -53,9 +53,10 @@ def reset_database(db: sqlite3.Connection = Depends(get_db)):
         
         for sample in c.get("samples", []):
             db.execute(
-                "INSERT INTO samples (id, case_id, type, state) VALUES (?, ?, ?, ?)",
-                (sample["id"], c["id"], sample["type"], sample["state"])
+                "INSERT INTO samples (id, case_id, type, state, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
+                (sample["id"], c["id"], sample["type"], sample["state"], c["created_at"], c["created_at"])
             )
+
             
         # MAGIA DEMO: Generujemy dziennik ze skrótami na podstawie seeda
         for ev in c.get("events", []):

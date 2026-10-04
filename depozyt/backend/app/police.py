@@ -15,7 +15,7 @@ def get_police_package(token: str, db: sqlite3.Connection = Depends(get_db)):
     case_id = token_row["case_id"]
 
     # Rejestracja faktu otwarcia pakietu przez policję
-    add_ledger_entry(db, case_id=case_id, event="ACCESSED", actor_id="SYSTEM")
+    add_ledger_entry(db, case_id=case_id, event="UZYSKANO_DOSTEP", actor_id="SYSTEM")
 
     samples = db.execute("SELECT id as sample_id, type, state FROM samples WHERE case_id = ?", (case_id,)).fetchall()
     
