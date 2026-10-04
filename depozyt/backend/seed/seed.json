@@ -2,32 +2,137 @@
 	"staff": [
 		{ "id": "ST-A41", "name": "Pielęgniarka Anna", "hospital_id": "H-DEMO", "public_key": "", "private_key": "" },
 		{ "id": "ST-B07", "name": "Lekarz Jan", "hospital_id": "H-DEMO", "public_key": "", "private_key": "" },
-		{ "id": "SYSTEM", "name": "Serwer Depozyt", "hospital_id": "", "public_key": "", "private_key": "" }
+		{ "id": "ST-C12", "name": "Ratownik Medyczny Piotr", "hospital_id": "H-DEMO", "public_key": "", "private_key": "" },
+		{ "id": "ST-D88", "name": "Technik Lab. Ewa", "hospital_id": "H-DEMO", "public_key": "", "private_key": "" },
+		{ "id": "SYSTEM", "name": "Serwer Depozyt", "hospital_id": "", "public_key": "", "private_key": "" },
+		{ "id": "VICTIM", "name": "Osoba Pokrzywdzona", "hospital_id": "", "public_key": "", "private_key": "" }
 	],
 	"cases": [
 		{
 			"id": "DP-DEMO-01",
 			"case_key": "DEMO-KEY1-AAAA-BBBB",
-			"status": "IN_DEPOSIT",
+			"status": "W_DEPOZYCIE",
 			"origin": "hospital",
 			"hospital_id": "H-DEMO",
-			"created_at": "2026-09-03T14:00:00Z",
-			"expires_at": "2027-09-03T14:00:00Z",
+			"created_at": "2026-10-02T14:00:00Z",
+			"expires_at": "2027-10-02T14:00:00Z",
 			"samples": [
-				{ "id": "S-0193", "type": "URINE", "state": "STORED" },
-				{ "id": "S-0194", "type": "SWAB", "state": "STORED" }
+				{ "id": "S-0193", "type": "MOCZ", "state": "ZMAGAZYNOWANA" },
+				{ "id": "S-0194", "type": "WYMAZ", "state": "ZAPLOMBOWANA" }
 			],
 			"events": [
-				{ "event": "ADMITTED", "actor_id": "ST-A41", "ts": "2026-09-03T14:05:00Z" },
-				{ "event": "COLLECTED", "sample_id": "S-0193", "actor_id": "ST-B07", "ts": "2026-09-03T14:20:00Z" },
+				{ "event": "PRZYJETA", "actor_id": "ST-A41", "ts": "2026-10-02T14:05:00Z" },
+				{ "event": "POBRANA", "sample_id": "S-0193", "actor_id": "ST-B07", "ts": "2026-10-02T14:20:00Z" },
 				{
-					"event": "SEALED",
+					"event": "ZAPLOMBOWANA",
 					"sample_id": "S-0193",
 					"actor_id": "ST-B07",
 					"location": "SOR, gabinet 3",
-					"ts": "2026-09-03T14:32:10Z"
+					"ts": "2026-10-02T14:32:10Z"
+				},
+				{
+					"event": "ZMAGAZYNOWANA",
+					"sample_id": "S-0193",
+					"actor_id": "ST-D88",
+					"location": "Chłodnia dowodowa A",
+					"ts": "2026-10-02T14:45:00Z"
+				},
+				{ "event": "POBRANA", "sample_id": "S-0194", "actor_id": "ST-C12", "ts": "2026-10-02T14:22:00Z" },
+				{
+					"event": "ZAPLOMBOWANA",
+					"sample_id": "S-0194",
+					"actor_id": "ST-C12",
+					"location": "SOR, gabinet 3",
+					"ts": "2026-10-02T14:35:10Z"
 				}
 			]
+		},
+		{
+			"id": "DP-DEMO-02",
+			"case_key": "DEMO-KEY2-CCCC-DDDD",
+			"status": "WYDANA",
+			"origin": "online",
+			"hospital_id": "H-DEMO",
+			"created_at": "2026-09-15T09:30:00Z",
+			"expires_at": "2027-09-15T09:30:00Z",
+			"samples": [
+				{ "id": "S-0205", "type": "KREW", "state": "ZMAGAZYNOWANA" },
+				{ "id": "S-0206", "type": "ODZIEZ", "state": "ZMAGAZYNOWANA" }
+			],
+			"events": [
+				{ "event": "PRZYJETA", "actor_id": "ST-A41", "ts": "2026-09-15T10:00:00Z" },
+				{ "event": "POBRANA", "sample_id": "S-0205", "actor_id": "ST-B07", "ts": "2026-09-15T10:15:00Z" },
+				{
+					"event": "ZAPLOMBOWANA",
+					"sample_id": "S-0205",
+					"actor_id": "ST-B07",
+					"location": "SOR, gabinet 1",
+					"ts": "2026-09-15T10:20:00Z"
+				},
+				{
+					"event": "ZMAGAZYNOWANA",
+					"sample_id": "S-0205",
+					"actor_id": "ST-D88",
+					"location": "Chłodnia dowodowa B",
+					"ts": "2026-09-15T10:45:00Z"
+				},
+				{ "event": "POBRANA", "sample_id": "S-0206", "actor_id": "ST-A41", "ts": "2026-09-15T10:18:00Z" },
+				{
+					"event": "ZAPLOMBOWANA",
+					"sample_id": "S-0206",
+					"actor_id": "ST-A41",
+					"location": "SOR, gabinet 1",
+					"ts": "2026-09-15T10:22:00Z"
+				},
+				{
+					"event": "ZMAGAZYNOWANA",
+					"sample_id": "S-0206",
+					"actor_id": "ST-D88",
+					"location": "Magazyn Suchy",
+					"ts": "2026-09-15T10:50:00Z"
+				},
+				{ "event": "DECISION_RELEASE", "actor_id": "VICTIM", "ts": "2026-10-04T08:00:00Z" }
+			]
+		},
+		{
+			"id": "DP-DEMO-03",
+			"case_key": "DEMO-KEY3-EEEE-FFFF",
+			"status": "ZGLOSZONA_DO_ZAMKNIECIA",
+			"origin": "hospital",
+			"hospital_id": "H-DEMO",
+			"created_at": "2026-09-20T18:45:00Z",
+			"expires_at": "2026-11-03T18:45:00Z",
+			"samples": [{ "id": "S-0311", "type": "WYMAZ", "state": "ZMAGAZYNOWANA" }],
+			"events": [
+				{ "event": "PRZYJETA", "actor_id": "ST-C12", "ts": "2026-09-20T19:00:00Z" },
+				{ "event": "POBRANA", "sample_id": "S-0311", "actor_id": "ST-C12", "ts": "2026-09-20T19:10:00Z" },
+				{
+					"event": "ZAPLOMBOWANA",
+					"sample_id": "S-0311",
+					"actor_id": "ST-C12",
+					"location": "Namiot ratunkowy",
+					"ts": "2026-09-20T19:15:00Z"
+				},
+				{
+					"event": "ZMAGAZYNOWANA",
+					"sample_id": "S-0311",
+					"actor_id": "ST-D88",
+					"location": "Chłodnia dowodowa A",
+					"ts": "2026-09-20T20:00:00Z"
+				},
+				{ "event": "DECISION_CLOSE", "actor_id": "VICTIM", "ts": "2026-10-04T12:00:00Z" }
+			]
+		},
+		{
+			"id": "DP-DEMO-04",
+			"case_key": "DEMO-KEY4-GGGG-HHHH",
+			"status": "UTWORZONA",
+			"origin": "online",
+			"hospital_id": "",
+			"created_at": "2026-10-04T06:15:00Z",
+			"expires_at": "2027-10-04T06:15:00Z",
+			"samples": [],
+			"events": []
 		}
 	]
 }
