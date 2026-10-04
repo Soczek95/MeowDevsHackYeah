@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import QRCode from 'react-qr-code';
 import { Scanner } from '@yudiel/react-qr-scanner'; 
 import { api } from '../../../../../frontend/src/shared/api';
-import staffData from '../../shared/content/staff.json';
 
 export default function HospitalList() {
-  const defaultStaffId = staffData?.staff?.[0]?.id || "ST-A41";
+  const defaultStaffId = "ST-A41";
   const defaultHospitalId = "szpital-centralny";
   
   // Stan główny
@@ -155,11 +154,13 @@ export default function HospitalList() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: '#fcfbfa', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      color: '#1a1a1a',
-      padding: '24px 48px',
-      boxSizing: 'border-box'
+      background: '#F7F6F2', 
+      fontFamily: '"Outfit", "Montserrat", system-ui, -apple-system, sans-serif',
+      color: '#101010',
+      padding: '40px 60px',
+      boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
       <header style={{ 
         display: 'flex', 
@@ -167,59 +168,65 @@ export default function HospitalList() {
         alignItems: 'center', 
         marginBottom: '60px' 
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer' }} onClick={() => setStep('ENTER_CASE')}>
-          <span style={{ fontSize: '1.3rem' }}>🌸</span> niezapominajkaCare
+        <div 
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700', fontSize: '1.2rem', cursor: 'pointer' }} 
+          onClick={() => setStep('ENTER_CASE')}
+        >
+          <span style={{ fontSize: '1.5rem' }}>✿</span> niezapominajkaCare
         </div>
         
-        {/* Prawy górny róg: Przycisk "Lista próbek" obok ikonki profilu */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <button 
             onClick={fetchAllSamples}
             disabled={actionLoading}
             style={{ 
-              background: '#e4e2dd', border: 'none', padding: '10px 20px', 
-              borderRadius: '20px', fontSize: '0.9rem', fontWeight: '600', 
-              cursor: 'pointer', color: '#333'
+              background: 'transparent', border: '1px solid #101010', padding: '10px 24px', 
+              borderRadius: '30px', fontSize: '0.9rem', fontWeight: '600', 
+              cursor: 'pointer', color: '#101010'
             }}
           >
-            📋 Lista próbek
+            Lista próbek
           </button>
           
           <div style={{ 
-            width: '36px', height: '36px', borderRadius: '50%', border: '1.5px solid #1a1a1a', 
+            width: '40px', height: '40px', borderRadius: '50%', border: '2px solid #101010', 
             display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
           }}>
-            👤
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
           </div>
         </div>
       </header>
 
       {step === 'ENTER_CASE' && (
-        <>
-          <h1 style={{ fontSize: '3rem', fontWeight: '500', letterSpacing: '-1px', marginBottom: '50px', marginTop: 0, color: '#111' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '50px', marginTop: 0 }}>
             Zabezpieczenie materiałów
           </h1>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'start', marginBottom: '80px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
             
+            {/* Lewa kolumna */}
             <div>
-              <div style={{ fontSize: '1.05rem', color: '#333', marginBottom: '20px' }}>Otwórz sprawę za pomocą aparatu</div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Otwórz sprawę</div>
               
               {!isScanning ? (
                 <button 
                   onClick={() => setIsScanning(true)}
-                  style={{ background: '#111', color: '#fff', border: 'none', padding: '16px 32px', borderRadius: '30px', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                  style={{ background: '#000', color: '#fff', border: 'none', padding: '18px 36px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: '700', letterSpacing: '0.5px', cursor: 'pointer', textTransform: 'uppercase' }}
                 >
-                  📷 ZESKANUJ KOD QR
+                  ZESKANUJ KOD QR
                 </button>
               ) : (
-                <div style={{ background: '#fff', padding: '16px', borderRadius: '20px', border: '1px solid #ddd', maxWidth: '350px' }}>
+                <div style={{ background: '#fff', padding: '16px', borderRadius: '24px', border: '1px solid #e2ddd6', maxWidth: '350px' }}>
                   <button 
                     onClick={() => setIsScanning(false)}
-                    style={{ marginBottom: '12px', padding: '8px 16px', background: '#dc3545', color: '#fff', border: 'none', borderRadius: '15px', cursor: 'pointer', fontSize: '0.85rem' }}
+                    style={{ marginBottom: '16px', padding: '10px 20px', background: '#f5f5f0', color: '#000', border: 'none', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
                   >
-                    ❌ Anuluj
+                    Anuluj skanowanie
                   </button>
-                  <div style={{ borderRadius: '12px', overflow: 'hidden', border: '2px dashed #ccc' }}>
+                  <div style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid #e2ddd6' }}>
                     <Scanner 
                       onScan={handleScan}
                       onResult={handleScan}
@@ -230,75 +237,86 @@ export default function HospitalList() {
               )}
             </div>
 
+            {/* Prawa kolumna */}
             <div>
-              <div style={{ fontSize: '1.05rem', color: '#333', marginBottom: '20px' }}>Wpisz numer sprawy lub próbki</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '450px' }}>
+              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Wpisz numer sprawy</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '500px' }}>
                 <input 
                   type="text"
-                  placeholder="np. CASE-2026-001 lub S-AB12-CD34"
                   value={caseInput}
                   onChange={(e) => setCaseInput(e.target.value)}
-                  style={{ background: '#e4e2dd', border: 'none', padding: '18px 24px', borderRadius: '16px', fontSize: '1rem', outline: 'none', color: '#333' }}
+                  style={{ 
+                    background: '#D8D5CC', 
+                    border: 'none', 
+                    height: '80px', 
+                    borderRadius: '24px', 
+                    fontSize: '1.5rem', 
+                    padding: '0 24px',
+                    outline: 'none', 
+                    color: '#101010',
+                    width: '100%',
+                    boxSizing: 'border-box'
+                  }}
                 />
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <button 
                     onClick={handleMainSubmit}
                     disabled={actionLoading}
-                    style={{ background: '#111', color: '#fff', border: 'none', padding: '16px 32px', borderRadius: '30px', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}
+                    style={{ background: '#000', color: '#fff', border: 'none', padding: '18px 36px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: '700', letterSpacing: '0.5px', cursor: 'pointer', textTransform: 'uppercase' }}
                   >
-                    {actionLoading ? "PRZETWARZANIE..." : "DALEJ"}
+                    {actionLoading ? "PRZETWARZANIE..." : "ZAREJESTRUJ PRÓBKĘ"}
                   </button>
                 </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
 
       {/* WIDOK: LISTA WSZYSTKICH PRÓBEK */}
       {step === 'SAMPLE_LIST' && (
-        <>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: '500', letterSpacing: '-1px', margin: 0, color: '#111' }}>
-              Wszystkie zarejestrowane próbki
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: '600', letterSpacing: '-1px', margin: 0 }}>
+              Zarejestrowane próbki
             </h1>
             <button 
               onClick={() => setStep('ENTER_CASE')}
-              style={{ background: '#111', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: '20px', cursor: 'pointer', fontWeight: '600' }}
+              style={{ background: '#000', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: '600' }}
             >
-              ← Powrót
+              Powrót do startu
             </button>
           </div>
 
           {allSamples.length === 0 ? (
-            <div style={{ padding: '40px', background: '#f0ede6', borderRadius: '16px', textAlign: 'center', color: '#666' }}>
+            <div style={{ padding: '60px', background: '#D8D5CC', borderRadius: '24px', textAlign: 'center', color: '#101010', fontSize: '1.2rem' }}>
               Brak zarejestrowanych próbek w bazie.
             </div>
           ) : (
-            <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid #e2ddd6', overflow: 'hidden', marginBottom: '60px' }}>
+            <div style={{ background: '#fff', borderRadius: '24px', border: '1px solid #e2ddd6', overflow: 'hidden', marginBottom: '60px' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                 <thead>
-                  <tr style={{ background: '#f0ede6', borderBottom: '1px solid #e2ddd6', fontSize: '0.9rem', color: '#444' }}>
-                    <th style={{ padding: '16px 20px' }}>ID Próbki</th>
-                    <th style={{ padding: '16px 20px' }}>Sprawa</th>
-                    <th style={{ padding: '16px 20px' }}>Typ</th>
-                    <th style={{ padding: '16px 20px' }}>Status</th>
-                    <th style={{ padding: '16px 20px' }}>Data utworzenia</th>
-                    <th style={{ padding: '16px 20px', textAlign: 'right' }}>Akcja</th>
+                  <tr style={{ background: '#F7F6F2', borderBottom: '1px solid #e2ddd6', fontSize: '0.9rem', color: '#444' }}>
+                    <th style={{ padding: '20px 24px', fontWeight: '600' }}>ID Próbki</th>
+                    <th style={{ padding: '20px 24px', fontWeight: '600' }}>Sprawa</th>
+                    <th style={{ padding: '20px 24px', fontWeight: '600' }}>Typ</th>
+                    <th style={{ padding: '20px 24px', fontWeight: '600' }}>Status</th>
+                    <th style={{ padding: '20px 24px', fontWeight: '600' }}>Data utworzenia</th>
+                    <th style={{ padding: '20px 24px', textAlign: 'right', fontWeight: '600' }}>Akcja</th>
                   </tr>
                 </thead>
                 <tbody>
                   {allSamples.map((sample, idx) => (
-                    <tr key={idx} style={{ borderBottom: '1px solid #f0ede6', fontSize: '0.95rem' }}>
-                      <td style={{ padding: '16px 20px', fontFamily: 'monospace', fontWeight: '600' }}>{sample.id}</td>
-                      <td style={{ padding: '16px 20px', fontFamily: 'monospace' }}>{sample.case_id}</td>
-                      <td style={{ padding: '16px 20px' }}>{sample.type}</td>
-                      <td style={{ padding: '16px 20px', color: '#2a6f43', fontWeight: '500' }}>{sample.state}</td>
-                      <td style={{ padding: '16px 20px', color: '#666' }}>{sample.created_at ? new Date(sample.created_at).toLocaleString() : '-'}</td>
-                      <td style={{ padding: '16px 20px', textAlign: 'right' }}>
+                    <tr key={idx} style={{ borderBottom: '1px solid #F7F6F2', fontSize: '1rem' }}>
+                      <td style={{ padding: '20px 24px', fontWeight: '600' }}>{sample.id}</td>
+                      <td style={{ padding: '20px 24px' }}>{sample.case_id}</td>
+                      <td style={{ padding: '20px 24px' }}>{sample.type}</td>
+                      <td style={{ padding: '20px 24px', fontWeight: '500' }}>{sample.state}</td>
+                      <td style={{ padding: '20px 24px', color: '#666' }}>{sample.created_at ? new Date(sample.created_at).toLocaleString() : '-'}</td>
+                      <td style={{ padding: '20px 24px', textAlign: 'right' }}>
                         <button 
                           onClick={() => processInput(sample.id)}
-                          style={{ background: '#111', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem' }}
+                          style={{ background: '#101010', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }}
                         >
                           Zarządzaj
                         </button>
@@ -309,158 +327,172 @@ export default function HospitalList() {
               </table>
             </div>
           )}
-        </>
+        </div>
       )}
 
+      {/* POZOSTAŁE WIDOKI DOSTOSOWANE WIZUALNIE DO NOWEGO STYLU */}
       {step === 'ADD_SAMPLE' && (
-        <>
-          <h1 style={{ fontSize: '3rem', fontWeight: '500', letterSpacing: '-1px', marginBottom: '20px', marginTop: 0, color: '#111' }}>
+        <div style={{ flex: 1 }}>
+          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '20px', marginTop: 0 }}>
             Rejestracja próbki
           </h1>
-          <p style={{ color: '#666', marginBottom: '40px', fontSize: '1rem' }}>
-            Sprawa: <strong style={{ color: '#111' }}>{currentCaseId}</strong> została przyjęta. Wybierz typ materiału dowodowego.
+          <p style={{ color: '#101010', marginBottom: '40px', fontSize: '1.2rem' }}>
+            Sprawa: <strong>{currentCaseId}</strong> została przyjęta. Wybierz typ materiału dowodowego.
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '450px', marginBottom: '80px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '500px', margin: '0 auto', marginBottom: '80px'}}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.95rem', color: '#333', marginBottom: '8px', fontWeight: '500' }}>Typ próbki</label>
+              <label style={{ display: 'block', fontSize: '1.2rem', marginBottom: '16px', fontWeight: '400'}}>Typ próbki</label>
               <select 
                 value={sampleType}
                 onChange={(e) => setSampleType(e.target.value)}
-                style={{ width: '100%', background: '#e4e2dd', border: 'none', padding: '18px 24px', borderRadius: '16px', fontSize: '1rem', outline: 'none', color: '#333', boxSizing: 'border-box' }}
+                style={{ width: '100%', background: '#D8D5CC', border: 'none', padding: '0 24px', height: '80px', borderRadius: '24px', fontSize: '1.2rem', outline: 'none', color: '#101010', boxSizing: 'border-box' }}
               >
                 <option value="SWAB">Wymaz (SWAB)</option>
                 <option value="BLOOD">Krew (BLOOD)</option>
                 <option value="URINE">Mocz (URINE)</option>
               </select>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
-              <button onClick={() => setStep('ENTER_CASE')} style={{ background: 'transparent', color: '#666', border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}>← Wróć</button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+              <button onClick={() => setStep('ENTER_CASE')} style={{ background: 'transparent', color: '#101010', border: 'none', cursor: 'pointer', fontSize: '1rem', fontWeight: '600', textDecoration: 'underline' }}>Wróć</button>
               <button 
                 onClick={handleAddSample}
                 disabled={actionLoading}
-                style={{ background: '#111', color: '#fff', border: 'none', padding: '16px 32px', borderRadius: '30px', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}
+                style={{ background: '#000', color: '#fff', border: 'none', padding: '18px 36px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: '700', letterSpacing: '0.5px', cursor: 'pointer', textTransform: 'uppercase' }}
               >
                 {actionLoading ? "ZAPISYWANIE..." : "ZAREJESTRUJ I WYGENERUJ QR"}
               </button>
             </div>
           </div>
-        </>
+        </div>
       )}
 
-      {step === 'SAMPLE_CREATED' && (
-        <div style={{ maxWidth: '500px', margin: '0 auto', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '2.2rem', fontWeight: '500', marginBottom: '10px', color: '#111' }}>
-            Próbka zarejestrowana pomyślnie!
-          </h1>
-          <p style={{ color: '#666', marginBottom: '30px' }}>
-            ID Próbki: <strong style={{ color: '#111', fontFamily: 'monospace' }}>{currentSampleId}</strong>
-          </p>
+{step === 'SAMPLE_CREATED' && (
+        <div style={{ 
+          flex: 1, 
+          display: 'grid', 
+          gridTemplateColumns: '1fr 1fr', /* Dwie równe kolumny */
+          gap: '20px', 
+          alignItems: 'center', /* Środkuje zawartość w pionie */
+          maxWidth: '1000px', 
+          margin: '0 auto' /* Środkuje cały kontener na ekranie */
+        }}>
+          
+          {/* LEWA STRONA: Komunikat i ID */}
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '20px', lineHeight: '1.2', marginTop: 0, color: '#101010' }}>
+              Próbka zarejestrowana pomyślnie!
+            </h1>
+            <p style={{ fontSize: '1.5rem', margin: 0, color: '#444' }}>
+              ID Próbki: <strong style={{ color: '#101010' }}>{currentSampleId}</strong>
+            </p>
+          </div>
 
-          <div style={{ background: '#fff', padding: '30px', borderRadius: '20px', border: '2px dashed #ccc', display: 'inline-block', marginBottom: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
-            <div style={{ marginBottom: '15px', fontSize: '0.85rem', fontWeight: '600', color: '#444', letterSpacing: '1px' }}>
-              NIEZAPOMINAJKACARE - ETYKIETA PRÓBKI
-            </div>
-            
-            <div style={{ background: 'white', padding: '10px', display: 'inline-block' }}>
-              <QRCode 
-                value={`${window.location.origin}/samples/${currentSampleId}`} 
-                size={180}
-                level="M"
-              />
+          {/* PRAWA STRONA: Kod QR i Przyciski */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ background: '#fff', padding: '40px', borderRadius: '32px', border: '2px solid #e2ddd6', display: 'inline-block', marginBottom: '40px', textAlign: 'center' }}>
+              <div style={{ marginBottom: '20px', fontSize: '0.9rem', fontWeight: '700', color: '#101010', letterSpacing: '1px' }}>
+                NIEZAPOMINAJKACARE
+              </div>
+              
+              <div style={{ background: 'white', padding: '16px', display: 'inline-block', border: '1px solid #f0f0f0', borderRadius: '16px' }}>
+                <QRCode 
+                  value={`${window.location.origin}/samples/${currentSampleId}`} 
+                  size={200}
+                  level="M"
+                />
+              </div>
+
+              <div style={{ marginTop: '24px', fontSize: '1.5rem', fontWeight: '700', color: '#101010' }}>
+                {currentSampleId}
+              </div>
+              <div style={{ fontSize: '1rem', color: '#666', marginTop: '8px' }}>
+                Typ: {sampleType}
+              </div>
             </div>
 
-            <div style={{ marginTop: '12px', fontSize: '1.1rem', fontWeight: 'bold', color: '#111', fontFamily: 'monospace' }}>
-              {currentSampleId}
-            </div>
-            <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '4px' }}>
-              Typ: {sampleType}
+            <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button 
+                onClick={handlePrint}
+                style={{ background: '#000', color: '#fff', border: 'none', padding: '18px 36px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: '700', letterSpacing: '0.5px', cursor: 'pointer', textTransform: 'uppercase' }}
+              >
+                WYDRUKUJ ETYKIETĘ
+              </button>
+              <button 
+                onClick={() => setStep('ENTER_CASE')}
+                style={{ background: 'transparent', color: '#101010', border: '1px solid #101010', padding: '18px 36px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: '700', letterSpacing: '0.5px', cursor: 'pointer', textTransform: 'uppercase' }}
+              >
+                ZAKOŃCZ
+              </button>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-            <button 
-              onClick={handlePrint}
-              style={{ background: '#2a6f43', color: '#fff', border: 'none', padding: '16px 28px', borderRadius: '30px', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-            >
-              🖨️ WYDRUKUJ ETYKIETĘ
-            </button>
-            <button 
-              onClick={() => setStep('ENTER_CASE')}
-              style={{ background: '#111', color: '#fff', border: 'none', padding: '16px 28px', borderRadius: '30px', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}
-            >
-              ZAKOŃCZ / KOLEJNA
-            </button>
-          </div>
         </div>
       )}
 
       {step === 'SAMPLE_DETAILS' && (
-        <>
-          <h1 style={{ fontSize: '3rem', fontWeight: '500', letterSpacing: '-1px', marginBottom: '20px', marginTop: 0, color: '#111' }}>
+        <div style={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center' /* <-- TO WYŚRODKUJE CAŁĄ ZAWARTOŚĆ W POZIOMIE */
+        }}>
+          <h1 style={{ fontSize: '2.0rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '40px', marginTop: 0,color: '#101010', textAlign: 'center'  }}>
             Zarządzanie próbką
           </h1>
-          <div style={{ background: '#f0ede6', padding: '24px', borderRadius: '16px', maxWidth: '480px', marginBottom: '30px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ background: '#D8D5CC', padding: '32px', borderRadius: '24px',width: '100%', maxWidth: '500px', marginBottom: '40px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
-              <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '2px' }}>Numer próbki</div>
-              <div style={{ fontSize: '1.05rem', fontWeight: '600', color: '#111' }}>{currentSampleId}</div>
+              <div style={{ fontSize: '1rem', color: '#444', marginBottom: '4px' }}>Numer próbki</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: '600', color: '#101010' }}>{currentSampleId}</div>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div>
-                <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '2px' }}>Rodzaj próbki</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: '500', color: '#111' }}>{sampleDetails.type}</div>
+                <div style={{ fontSize: '1rem', color: '#444', marginBottom: '4px' }}>Rodzaj próbki</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: '500', color: '#101010' }}>{sampleDetails.type}</div>
               </div>
               <div>
-                <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '2px' }}>Aktualny status</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: '500', color: '#2a6f43' }}>{sampleDetails.status}</div>
+                <div style={{ fontSize: '1rem', color: '#444', marginBottom: '4px' }}>Aktualny status</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: '600', color: '#101010' }}>{sampleDetails.status}</div>
               </div>
             </div>
 
-            <div style={{ borderTop: '1px solid #e2ddd6', paddingTop: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div>
-                <div style={{ fontSize: '0.8rem', color: '#777', marginBottom: '2px' }}>Data utworzenia</div>
-                <div style={{ fontSize: '0.85rem', color: '#333' }}>{sampleDetails.createdAt}</div>
+                <div style={{ fontSize: '0.9rem', color: '#555', marginBottom: '4px' }}>Data utworzenia</div>
+                <div style={{ fontSize: '1rem', color: '#101010' }}>{sampleDetails.createdAt}</div>
               </div>
               <div>
-                <div style={{ fontSize: '0.8rem', color: '#777', marginBottom: '2px' }}>Ostatnia modyfikacja</div>
-                <div style={{ fontSize: '0.85rem', color: '#333' }}>{sampleDetails.updatedAt}</div>
+                <div style={{ fontSize: '0.9rem', color: '#555', marginBottom: '4px' }}>Ostatnia modyfikacja</div>
+                <div style={{ fontSize: '1rem', color: '#101010' }}>{sampleDetails.updatedAt}</div>
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '480px', marginBottom: '80px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '500px', marginBottom: '80px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.95rem', color: '#333', marginBottom: '8px', fontWeight: '500' }}>Zmień status / Zdarzenie</label>
+              <label style={{ display: 'block', fontSize: '1.2rem', marginBottom: '16px', fontWeight: '400' }}>Zmień status / Zdarzenie</label>
               <select 
                 value={selectedEvent}
                 onChange={(e) => setSelectedEvent(e.target.value)}
-                style={{ width: '100%', background: '#e4e2dd', border: 'none', padding: '18px 24px', borderRadius: '16px', fontSize: '1rem', outline: 'none', color: '#333', boxSizing: 'border-box' }}
+                style={{ width: '100%', background: '#D8D5CC', border: 'none', padding: '0 24px', height: '80px', borderRadius: '24px', fontSize: '1.1rem', outline: 'none', color: '#101010', boxSizing: 'border-box' }}
               >
                 <option value="SEALED">Zabezpieczono / Opięczętowane (SEALED)</option>
                 <option value="STORED">Zmagazynowano w depozycie (STORED)</option>
               </select>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
-              <button onClick={() => setStep('ENTER_CASE')} style={{ background: 'transparent', color: '#666', border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}>← Wróć</button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+              <button onClick={() => setStep('ENTER_CASE')} style={{ background: 'transparent', color: '#101010', border: 'none', cursor: 'pointer', fontSize: '1rem', fontWeight: '600', textDecoration: 'underline' }}>Wróć</button>
               <button 
                 onClick={handleAddSampleEvent}
                 disabled={actionLoading}
-                style={{ background: '#111', color: '#fff', border: 'none', padding: '16px 32px', borderRadius: '30px', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}
+                style={{ background: '#000', color: '#fff', border: 'none', padding: '18px 36px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: '700', letterSpacing: '0.5px', cursor: 'pointer', textTransform: 'uppercase' }}
               >
                 {actionLoading ? "AKTUALIZOWANIE..." : "ZAPISZ NOWY STATUS"}
               </button>
             </div>
           </div>
-        </>
+        </div>
       )}
-
-      <div style={{ 
-        marginTop: '80px', fontSize: '0.9rem', color: '#555', lineHeight: '1.5',
-        borderTop: '1px solid #eae5e0', paddingTop: '20px', maxWidth: '600px'
-      }}>
-        Próbki dowodowe nie są badane, dopóki pacjentka nie zdecyduje.<br />
-        Nie zlecaj ich badania.
-      </div>
     </div>
   );
 }
