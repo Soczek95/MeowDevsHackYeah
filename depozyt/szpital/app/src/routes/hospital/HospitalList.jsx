@@ -63,8 +63,8 @@ export default function HospitalList() {
         setSampleDetails({
           status: response?.state || 'Nieznany',
           type: response?.type || 'Nieznany',
-          createdAt: response?.created_at ? new Date(response.created_at).toLocaleString() : '-',
-          updatedAt: response?.updated_at ? new Date(response.updated_at).toLocaleString() : '-'
+          createdAt: response?.created_at ? new Date(response.created_at).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-',
+          updatedAt: response?.updated_at ? new Date(response.updated_at).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'
         });
       } catch (err) {
         alert("Nie znaleziono próbki o takim numerze.");
@@ -202,14 +202,14 @@ export default function HospitalList() {
 
       {step === 'ENTER_CASE' && (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '50px', marginTop: 0 }}>
+          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '90px', marginTop: 0, color: '#101010' }}>
             Zabezpieczenie materiałów
           </h1>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
             
             {/* Lewa kolumna */}
             <div>
-              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Otwórz sprawę</div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Otwórz sprawę/Sprawdź próbkę</div>
               
               {!isScanning ? (
                 <button 
@@ -239,7 +239,7 @@ export default function HospitalList() {
 
             {/* Prawa kolumna */}
             <div>
-              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Wpisz numer sprawy</div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Wpisz numer sprawy/próbki</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '500px' }}>
                 <input 
                   type="text"
@@ -264,7 +264,7 @@ export default function HospitalList() {
                     disabled={actionLoading}
                     style={{ background: '#000', color: '#fff', border: 'none', padding: '18px 36px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: '700', letterSpacing: '0.5px', cursor: 'pointer', textTransform: 'uppercase' }}
                   >
-                    {actionLoading ? "PRZETWARZANIE..." : "ZAREJESTRUJ PRÓBKĘ"}
+                    {actionLoading ? "PRZETWARZANIE..." : "WYSZUKAJ"}
                   </button>
                 </div>
               </div>
@@ -312,7 +312,7 @@ export default function HospitalList() {
                       <td style={{ padding: '20px 24px' }}>{sample.case_id}</td>
                       <td style={{ padding: '20px 24px' }}>{sample.type}</td>
                       <td style={{ padding: '20px 24px', fontWeight: '500' }}>{sample.state}</td>
-                      <td style={{ padding: '20px 24px', color: '#666' }}>{sample.created_at ? new Date(sample.created_at).toLocaleString() : '-'}</td>
+                      <td style={{ padding: '20px 24px', color: '#666' }}>{sample.created_at ? new Date(sample.created_at).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'}</td>
                       <td style={{ padding: '20px 24px', textAlign: 'right' }}>
                         <button 
                           onClick={() => processInput(sample.id)}
@@ -333,7 +333,7 @@ export default function HospitalList() {
       {/* POZOSTAŁE WIDOKI DOSTOSOWANE WIZUALNIE DO NOWEGO STYLU */}
       {step === 'ADD_SAMPLE' && (
         <div style={{ flex: 1 }}>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '20px', marginTop: 0 }}>
+          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '90px', marginTop: 0, color: '#101010' }}>
             Rejestracja próbki
           </h1>
           <p style={{ color: '#101010', marginBottom: '40px', fontSize: '1.2rem' }}>
