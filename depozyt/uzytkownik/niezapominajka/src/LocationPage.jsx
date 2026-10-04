@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import flowerIcon from './assets/famicons_flower-sharp.svg'; 
+import QRCode from 'react-qr-code';
 
 // Odbieramy caseData w propsach
 export default function LocationPage({ onHome, caseData }) {
@@ -84,6 +85,9 @@ export default function LocationPage({ onHome, caseData }) {
     }
   };
 
+  // Generujemy wartość QR tylko, jeśli caseData jest dostarczone
+  const qrValue = caseData ? `${caseData.case_id} | ${caseData.case_key}` : '';
+
   return (
     <div className="layout-container-sub">
       <div className="main-content">
@@ -167,12 +171,31 @@ export default function LocationPage({ onHome, caseData }) {
 
               <div className="case-card-container">
                 <div className="case-card-left">
-                  {/* Wyświetlamy dane faktycznie zwrócone z API */}
                   <p><strong>KOD SPRAWY:</strong> {caseData ? caseData.case_id : 'Tworzenie sprawy...'}</p>
                   <p><strong>KLUCZ SPRAWY:</strong> {caseData ? caseData.case_key : 'Tworzenie sprawy...'}</p>
                 </div>
-                <div className="case-card-qr">
-                  <span>KOD QR</span>
+                
+                {/* Nadpisanie szerokości i wysokości wprost w komponencie */}
+                <div 
+                  className="case-card-qr" 
+                  style={{ 
+                    width: 'auto', 
+                    height: 'auto', 
+                    padding: '8px', 
+                    background: '#ffffff',
+                    borderRadius: '8px'
+                  }}
+                >
+                  {caseData ? (
+                    <QRCode 
+                      value={qrValue} 
+                      size={90} 
+                      bgColor="#FFFFFF"
+                      fgColor="#000000"
+                    />
+                  ) : (
+                    <span style={{ padding: '20px', color: '#000' }}>Ładowanie...</span>
+                  )}
                 </div>
               </div>
 

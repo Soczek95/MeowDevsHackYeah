@@ -2,6 +2,7 @@ import { useState } from 'react';
 import flowerIcon from './assets/famicons_flower-sharp.svg';
 
 export default function CaseDashboardPage({ caseId, caseKey, onHome, onLogout }) {
+  // Stan statusu - w przyszłości można go pobierać z API
   const [status] = useState('Aktywna (Oczekuje na wizytę w SOR)');
 
   const handleQuickExit = () => {
@@ -33,24 +34,52 @@ export default function CaseDashboardPage({ caseId, caseKey, onHome, onLogout })
         <main className="merged-flow-main">
           <h2>Panel Zarządzania Sprawą</h2>
           
-          <div className="merged-results-box" style={{ marginTop: '10px', textAlign: 'left' }}>
-            <p><strong>ID Sprawy:</strong> {caseId || 'DP-6WEB-94XM'}</p>
-            <p><strong>Klucz dostępu:</strong> {caseKey || '••••••••••••'}</p>
-            <p><strong>Status sprawy:</strong> <span style={{ color: '#a3e635' }}>{status}</span></p>
+          {/* NOWA KARTA */}
+          <div className="case-dashboard-card">
             
-            <hr style={{ borderColor: 'rgba(255,255,255,0.2)', margin: '15px 0' }} />
+            {/* Sekcja 1: Status i ID */}
+            <div className="card-header-section">
+              <div className="status-badge">
+                <span className="status-dot"></span>
+                {status}
+              </div>
+              <div className="case-id-display">
+                ID: <span>{caseId || 'DP-6WEB-94XM'}</span>
+              </div>
+            </div>
 
-            <p className="med-info-text">
-              • Udaj się do najbliższego wyznaczonego SOR wraz z zabezpieczoną próbką.<br />
-              • Pokaż kod sprawy personelowi medycznemu.<br />
-              • Możesz w każdej chwili bezpiecznie wylogować się z tego panelu.
-            </p>
+            {/* Sekcja 2: Klucz dostępu */}
+            <div className="card-key-section">
+              <label>Klucz dostępu do sprawy</label>
+              <div className="key-value">
+                {caseKey || '••••••••••••'}
+              </div>
+            </div>
 
-            <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-              <button className="support-button rules-btn" onClick={onLogout} style={{ flex: 1 }}>
+            {/* Sekcja 3: Instrukcje */}
+            <div className="card-instructions-section">
+              <h3>Co dalej?</h3>
+              <ul className="instructions-list">
+                <li>
+                  <span>Udaj się do najbliższego wyznaczonego SOR wraz z zabezpieczoną próbką.</span>
+                </li>
+                <li>
+                  <span>Pokaż kod sprawy personelowi medycznemu.</span>
+                </li>
+                <li>
+
+                  <span>Możesz w każdej chwili bezpiecznie wylogować się z tego panelu.</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Sekcja 4: Akcje */}
+            <div className="card-actions-section">
+              <button className="support-button rules-btn" onClick={onLogout}>
                 Wyloguj / Powrót
               </button>
             </div>
+
           </div>
         </main>
       </div>
