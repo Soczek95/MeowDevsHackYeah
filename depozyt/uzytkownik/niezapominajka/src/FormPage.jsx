@@ -8,7 +8,6 @@ export default function FormPage({ onBack, onCreate, onHome }) {
   const [isValid, setIsValid] = useState(false);
   const [isFuture, setIsFuture] = useState(false);
 
-  // Funkcja szybkiego opuszczenia strony na bezpieczną witrynę
   const handleQuickExit = () => {
     window.location.replace('https://www.google.com');
   };
@@ -68,33 +67,34 @@ export default function FormPage({ onBack, onCreate, onHome }) {
             </span>
 
             <button 
-                className="login-btn" 
-                aria-label="Szybkie wyjście na bezpieczną stronę" 
-                onClick={handleQuickExit}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
-                >
-                <img 
-                    src={flowerIcon} 
-                    alt="Kwiatek - szybkie wyjście" 
-                    style={{ width: '32px', height: '32px', filter: 'brightness(0) invert(1)' }} 
-                />
-                </button>
+              className="login-btn" 
+              aria-label="Szybkie wyjście na bezpieczną stronę" 
+              onClick={handleQuickExit}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+            >
+              <img 
+                src={flowerIcon} 
+                alt="Kwiatek - szybkie wyjście" 
+                style={{ width: '32px', height: '32px', filter: 'brightness(0) invert(1)' }} 
+              />
+            </button>
           </div>
         </header>
 
-        <main className="form-main">
-          <h2>Określ kiedy był ostatni moment, który pamiętasz?</h2>
+        {/* GŁÓWNY BOX - teraz w stylu glassmorphism, jak w RulesPage */}
+        <main className="form-page-box">
+          <h2 className="form-page-title">Określ kiedy był ostatni moment, który pamiętasz?</h2>
           
           <input 
             type="datetime-local" 
-            className="date-input"
+            className="date-input form-date-input"
             value={selectedDate}
             onChange={handleDateChange}
             max={new Date().toISOString().slice(0, 16)}
           />
 
           {isFuture && (
-            <div className="form-result-text" style={{ color: '#ffd1d1' }}>
+            <div className="form-result-text form-result-error">
               <p><strong>{timeElapsed}</strong></p>
               <p>{optionsText}</p>
             </div>
@@ -117,9 +117,9 @@ export default function FormPage({ onBack, onCreate, onHome }) {
                     await onCreate();
                   }
                 }}
->
-  UTWÓRZ SPRAWĘ
-</button>
+              >
+                UTWÓRZ SPRAWĘ
+              </button>
             )}
 
             <button className="btn-text rules-back-btn" onClick={onBack}>
