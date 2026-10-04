@@ -63,8 +63,8 @@ export default function HospitalList() {
         setSampleDetails({
           status: response?.state || 'Nieznany',
           type: response?.type || 'Nieznany',
-          createdAt: response?.created_at ? new Date(response.created_at).toLocaleString() : '-',
-          updatedAt: response?.updated_at ? new Date(response.updated_at).toLocaleString() : '-'
+          createdAt: response?.created_at ? new Date(response.created_at).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-',
+          updatedAt: response?.updated_at ? new Date(response.updated_at).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'
         });
       } catch (err) {
         alert("Nie znaleziono próbki o takim numerze.");
@@ -312,7 +312,7 @@ export default function HospitalList() {
                       <td style={{ padding: '20px 24px' }}>{sample.case_id}</td>
                       <td style={{ padding: '20px 24px' }}>{sample.type}</td>
                       <td style={{ padding: '20px 24px', fontWeight: '500' }}>{sample.state}</td>
-                      <td style={{ padding: '20px 24px', color: '#666' }}>{sample.created_at ? new Date(sample.created_at).toLocaleString() : '-'}</td>
+                      <td style={{ padding: '20px 24px', color: '#666' }}>{sample.created_at ? new Date(sample.created_at).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'}</td>
                       <td style={{ padding: '20px 24px', textAlign: 'right' }}>
                         <button 
                           onClick={() => processInput(sample.id)}
