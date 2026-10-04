@@ -202,7 +202,7 @@ export default function HospitalList() {
 
       {step === 'ENTER_CASE' && (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '50px', marginTop: 0 }}>
+          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '90px', marginTop: 0, color: '#101010' }}>
             Zabezpieczenie materiałów
           </h1>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
@@ -333,7 +333,7 @@ export default function HospitalList() {
       {/* POZOSTAŁE WIDOKI DOSTOSOWANE WIZUALNIE DO NOWEGO STYLU */}
       {step === 'ADD_SAMPLE' && (
         <div style={{ flex: 1 }}>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '20px', marginTop: 0 }}>
+          <h1 style={{ fontSize: '3.5rem', fontWeight: '600', letterSpacing: '-1.5px', marginBottom: '90px', marginTop: 0, color: '#101010' }}>
             Rejestracja próbki
           </h1>
           <p style={{ color: '#101010', marginBottom: '40px', fontSize: '1.2rem' }}>
