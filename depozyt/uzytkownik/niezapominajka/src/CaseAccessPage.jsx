@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import flowerIcon from './assets/famicons_flower-sharp.svg';
-import { api } from '../../../frontend/src/shared/api'; // <-- Zaimportuj moduł API
+import { api } from '../../../frontend/src/shared/api';
 
 export default function CaseAccessPage({ onHome, onGoToRules, onSubmitCase }) {
   const [caseCode, setCaseCode] = useState('');
@@ -18,13 +18,12 @@ export default function CaseAccessPage({ onHome, onGoToRules, onSubmitCase }) {
     setErrorMessage('');
 
     try {
-      // Wywołujemy endpoint z api.ts używając wpisanego kodu i klucza
       const response = await api.getCaseStatus(caseCode.trim(), caseKey.trim());
       
       console.log("Sukces logowania do sprawy:", response);
       
-      // Jeśli zapytanie się powiodło, przekazujemy dane wyżej
       if (onSubmitCase) {
+        // Przekazujemy pełną odpowiedź serwera
         onSubmitCase(caseCode, caseKey, response);
       }
     } catch (err) {
@@ -93,7 +92,6 @@ export default function CaseAccessPage({ onHome, onGoToRules, onSubmitCase }) {
               />
             </div>
 
-            {/* Wyświetlanie błędu, jeśli logowanie się nie powiodło */}
             {errorMessage && (
               <p style={{ color: '#ffd1d1', fontSize: '0.9rem', textAlign: 'center', margin: '5px 0' }}>
                 {errorMessage}

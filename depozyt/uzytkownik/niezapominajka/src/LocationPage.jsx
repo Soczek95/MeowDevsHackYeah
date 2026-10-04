@@ -85,8 +85,8 @@ export default function LocationPage({ onHome, caseData }) {
     }
   };
 
-  // Generujemy wartość QR tylko, jeśli caseData jest dostarczone
-  const qrValue = caseData ? `${caseData.case_id} | ${caseData.case_key}` : '';
+  // Generujemy wartość QR zawierającą TYLKO Kod Sprawy (case_id)
+  const qrValue = caseData ? caseData.case_id : '';
 
   return (
     <div className="layout-container-sub">
@@ -175,7 +175,6 @@ export default function LocationPage({ onHome, caseData }) {
                   <p><strong>KLUCZ SPRAWY:</strong> {caseData ? caseData.case_key : 'Tworzenie sprawy...'}</p>
                 </div>
                 
-                {/* Nadpisanie szerokości i wysokości wprost w komponencie */}
                 <div 
                   className="case-card-qr" 
                   style={{ 

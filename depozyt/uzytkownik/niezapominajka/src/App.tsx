@@ -6,8 +6,20 @@ import LocationPage from './LocationPage';
 import CodePage from './CodePage';
 import CaseAccessPage from './CaseAccessPage';
 import CaseDashboardPage from './CaseDashboardPage';
-import { api } from '../../../frontend/src/shared/api'; // <-- 1. Dodany import api (dostosuj ścieżkę, jeśli jest inna)
+import { api } from '../../../frontend/src/shared/api';
 import './App.css';
+
+// Typ dla danych z serwera - dopasuj do rzeczywistej odpowiedzi API
+export interface CaseServerData {
+  case_id?: string;
+  case_key?: string;
+  status?: string;
+  hospital?: string;
+  created_at?: string;
+  expires_at?: string;
+  samples?: Array<{ type: string; status: string }>;
+  [key: string]: any; // pozwala na dodatkowe pola
+}
 
 export default function App() {
   const [currentView, setCurrentView] = useState('main');
@@ -15,8 +27,12 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [caseData, setCaseData] = useState<{ case_id: string, case_key: string } | null>(null);
   
-  // Stan dla zalogowanej sprawy w panelu dostępu
-  const [loggedCase, setLoggedCase] = useState<{ code: string, key: string } | null>(null);
+  // Stan dla zalogowanej sprawy - teraz z pełnymi danymi z serwera
+  const [loggedCase, setLoggedCase] = useState<{ 
+    code: string; 
+    key: string; 
+    serverData: CaseServerData | null;
+  } | null>(null);
 
   const handleCreateCase = async () => {
     setIsLoading(true);
@@ -53,15 +69,13 @@ export default function App() {
     );
   }
 
-  // 2. Jeśli użytkownik jest zalogowany do sprawy, pokazujemy dashboard, w przeciwnym razie formularz logowania
   if (currentView === 'case-access') {
     if (loggedCase) {
       return (
         <CaseDashboardPage 
           caseId={loggedCase.code}
-          caseKey={loggedCase.key}
+          serverData={loggedCase.serverData}
           onHome={() => { setCurrentView('main'); setLoggedCase(null); }}
-          onLogout={() => setLoggedCase(null)}
         />
       );
     }
@@ -70,10 +84,13 @@ export default function App() {
       <CaseAccessPage 
         onHome={() => setCurrentView('main')}
         onGoToRules={() => setCurrentView('rules')}
-        onSubmitCase={(code: string, key: string) => {
-          console.log("Logowanie do sprawy:", code, key);
-          // Ustawiamy zalogowaną sprawę i przechodzimy do widoku panelu
-          setLoggedCase({ code, key });
+        onSubmitCase={(code: string, key: string, serverResponse: CaseServerData) => {
+          console.log("Logowanie do sprawy:", code, key, serverResponse);
+          setLoggedCase({ 
+            code, 
+            key, 
+            serverData: serverResponse 
+          });
         }}
       />
     );

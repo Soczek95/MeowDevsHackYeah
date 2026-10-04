@@ -1,13 +1,39 @@
-import { useState } from 'react';
 import flowerIcon from './assets/famicons_flower-sharp.svg';
 
-export default function CaseDashboardPage({ caseId, caseKey, onHome, onLogout }) {
-  // Stan statusu - w przyszłości można go pobierać z API
-  const [status] = useState('Aktywna (Oczekuje na wizytę w SOR)');
-
+export default function CaseDashboardPage({ caseId, serverData, onHome }) {
   const handleQuickExit = () => {
     window.location.replace('https://www.google.com');
   };
+
+  // === WYCIĄGANIE DANYCH Z SERWERA Z FALLBACKAMI ===
+  
+  // ID sprawy - najpierw z serwera, potem z propsa, na końcu hardcode
+  const displayCaseId = serverData?.case_id || caseId || 'DP-DEMO-01';
+  
+  // Klucz - z propsa (bo to co wpisał użytkownik) lub z serwera
+  
+  // Szpital
+  const hospital = serverData?.hospital || 'Szpital Demo';
+  
+  // Daty - formatowanie z ISO na czytelny polski format
+  const formatDate = (dateString) => {
+    if (!dateString) return null;
+    try {
+      return new Date(dateString).toLocaleDateString('pl-PL', { 
+        day: 'numeric', 
+        month: 'short', 
+        year: 'numeric' 
+      });
+    } catch {
+      return dateString;
+    }
+  };
+  
+  const createdAt = formatDate(serverData?.created_at) || '1 lis 2026';
+  const expiresAt = formatDate(serverData?.expires_at) || '3 lis 2028';
+  
+  // Próbki - pusta tablica, jeśli serwer nic nie zwróci
+  const samples = Array.isArray(serverData?.samples) ? serverData.samples : [];
 
   return (
     <div className="layout-container-sub">
@@ -31,57 +57,61 @@ export default function CaseDashboardPage({ caseId, caseKey, onHome, onLogout })
           </div>
         </header>
 
-        <main className="merged-flow-main">
-          <h2>Panel Zarządzania Sprawą</h2>
+        <main className="dashboard-main">
           
-          {/* NOWA KARTA */}
-          <div className="case-dashboard-card">
+          {/* GŁÓWNY BOX Z INFORMACJAMI */}
+          <div className="dashboard-info-box">
+            <h2 className="dashboard-title">Twoje próbki są bezpiecznie przechowywane.</h2>
             
-            {/* Sekcja 1: Status i ID */}
-            <div className="card-header-section">
-              <div className="status-badge">
-                <span className="status-dot"></span>
-                {status}
-              </div>
-              <div className="case-id-display">
-                ID: <span>{caseId || 'DP-6WEB-94XM'}</span>
-              </div>
+            <div className="dashboard-details">
+              <p>Sprawa {displayCaseId} · {hospital}</p>
+              <p>Przechowywane od {createdAt} do {expiresAt}</p>
             </div>
 
-            {/* Sekcja 2: Klucz dostępu */}
-            <div className="card-key-section">
-              <label>Klucz dostępu do sprawy</label>
-              <div className="key-value">
-                {caseKey || '••••••••••••'}
-              </div>
+            <div className="dashboard-samples">
+              <p className="samples-title">PRÓBKI</p>
+              {samples.length > 0 ? (
+                samples.map((sample, index) => (
+                  <p key={index}>{sample.type}: {sample.status}</p>
+                ))
+              ) : (
+                <p className="samples-empty">Brak próbek do wyświetlenia</p>
+              )}
             </div>
 
-            {/* Sekcja 3: Instrukcje */}
-            <div className="card-instructions-section">
-              <h3>Co dalej?</h3>
-              <ul className="instructions-list">
-                <li>
-                  <span>Udaj się do najbliższego wyznaczonego SOR wraz z zabezpieczoną próbką.</span>
-                </li>
-                <li>
-                  <span>Pokaż kod sprawy personelowi medycznemu.</span>
-                </li>
-                <li>
-
-                  <span>Możesz w każdej chwili bezpiecznie wylogować się z tego panelu.</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Sekcja 4: Akcje */}
-            <div className="card-actions-section">
-              <button className="support-button rules-btn" onClick={onLogout}>
-                Wyloguj / Powrót
-              </button>
-            </div>
-
+            
           </div>
+
+          {/* SEKCJA AKCJI */}
+          <div className="dashboard-actions-section">
+            <h3 className="actions-heading">CO CHCESZ ZROBIĆ?</h3>
+            
+            <div className="dashboard-buttons-row">
+              <button className="dashboard-btn">
+                Przekaż sprawę policji
+              </button>
+              
+              <button className="dashboard-btn">
+                Przedłuż<br />przechowywanie
+              </button>
+              
+              <button className="dashboard-btn">
+                Zamknij<br />sprawę
+              </button>
+
+
+            </div>
+          </div>
+
         </main>
+
+        {/* STOPKA Z LINKAMI */}
+        <footer className="dashboard-footer">
+          <span className="footer-link">Moja sprawa</span>
+          <span className="footer-link">Moje informacje</span>
+          <span className="footer-link">Pomoc</span>
+        </footer>
+
       </div>
     </div>
   );
