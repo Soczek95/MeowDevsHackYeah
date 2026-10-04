@@ -14,36 +14,86 @@ export default function LocationPage({ onHome, caseData }) {
     window.location.replace('https://www.google.com');
   };
 
-  const krakowHospitals = [
-    { name: 'Szpital Uniwersytecki w Krakowie (SOR)', address: 'ul. Jakubowskiego 2, Kraków', lat: 50.0121, lon: 19.9856 },
-    { name: 'Szpital Specjalistyczny im. G. Narutowicza (SOR)', address: 'ul. Prądnicka 35-37, Kraków', lat: 50.0812, lon: 19.9431 },
-    { name: 'Szpital Specjalistyczny im. S. Żeromskiego (SOR)', address: 'os. Na Skarpie 66, Kraków', lat: 50.0784, lon: 20.0332 },
-    { name: 'Wojskowy Szpital Kliniczny z Polikliniką (SOR)', address: 'ul. Wrocławska 1-3, Kraków', lat: 50.0765, lon: 19.9287 },
-  ];
+  // Precyzyjne obliczanie odległości (wzór Haversine)
+  const getDistanceKm = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Promień Ziemi w km
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
 
-  const findNearestHospital = (userLat, userLon, placeName = '') => {
+  // 1. Szukanie w Overpass API na podstawie współrzędnych
+  const findNearestHospital = async (userLat, userLon, placeName = '') => {
     setLoading(true);
-
-    setTimeout(() => {
-      let nearest = krakowHospitals[0];
-      let minDistance = Number.MAX_VALUE;
-
-      krakowHospitals.forEach((hosp) => {
-        const dist = Math.sqrt(Math.pow(hosp.lat - userLat, 2) + Math.pow(hosp.lon - userLon, 2));
-        if (dist < minDistance) {
-          minDistance = dist;
-          nearest = hosp;
-        }
+    try {
+      // Zapytanie o szpitale z SOR w promieniu 50 km (50000 metrów)
+      const query = `
+        [out:json][timeout:15];
+        (
+          node["amenity"="hospital"]["emergency"="yes"](around:50000,${userLat},${userLon});
+          way["amenity"="hospital"]["emergency"="yes"](around:50000,${userLat},${userLon});
+          relation["amenity"="hospital"]["emergency"="yes"](around:50000,${userLat},${userLon});
+        );
+        out center;
+      `;
+      
+      const res = await fetch('https://overpass-api.de/api/interpreter', {
+        method: 'POST',
+        body: `data=${encodeURIComponent(query)}`
       });
+      const data = await res.json();
 
+      if (data.elements && data.elements.length > 0) {
+        let nearest = null;
+        let minDistance = Number.MAX_VALUE;
+
+        // Znajdź fizycznie najbliższy obiekt z pobranych
+        data.elements.forEach(el => {
+          const lat = el.lat || el.center.lat;
+          const lon = el.lon || el.center.lon;
+          const dist = getDistanceKm(userLat, userLon, lat, lon);
+
+          if (dist < minDistance) {
+            minDistance = dist;
+            
+            // Formatowanie adresu z tagów OSM
+            const street = el.tags['addr:street'] || '';
+            const houseNumber = el.tags['addr:housenumber'] || '';
+            const city = el.tags['addr:city'] || '';
+            let fullAddress = `${street} ${houseNumber}, ${city}`.trim().replace(/^,|,$/g, '').trim();
+            
+            nearest = {
+              name: el.tags.name || 'Szpital / SOR (brak nazwy w bazie)',
+              address: fullAddress.length > 3 ? fullAddress : 'Sprawdź na mapie (brak dokładnego adresu)',
+              dist: dist
+            };
+          }
+        });
+
+        setHospitalInfo({
+          name: nearest.name,
+          address: `${nearest.address} (~${nearest.dist.toFixed(1)} km stąd)`
+        });
+      } else {
+        setHospitalInfo({
+          name: 'Brak wyników',
+          address: 'Nie znaleziono oddziału ratunkowego (SOR) w promieniu 50 km.'
+        });
+      }
+      setLocation(placeName || 'Aktualna lokalizacja GPS');
+    } catch (error) {
+      console.error("Błąd pobierania danych OSM:", error);
       setHospitalInfo({
-        name: nearest.name,
-        address: nearest.address
+        name: 'Błąd połączenia',
+        address: 'Nie udało się pobrać danych. Spróbuj użyć innej wyszukiwarki medycznej.'
       });
-
-      setLocation(placeName || `Kraków (współrzędne GPS)`);
+    } finally {
       setLoading(false);
-    }, 400);
+    }
   };
 
   const handleGetGeoLocation = () => {
@@ -55,16 +105,38 @@ export default function LocationPage({ onHome, caseData }) {
     setLoading(true);
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        findNearestHospital(lat, lon, 'Twoja lokalizacja GPS (Kraków i okolice)');
+        findNearestHospital(position.coords.latitude, position.coords.longitude, 'Twoja lokalizacja GPS');
       },
       () => {
         setLoading(false);
-        alert('Nie udało się pobrać lokalizacji. Sprawdź uprawnienia przeglądarki.');
+        alert('Nie udało się pobrać lokalizacji. Sprawdź uprawnienia przeglądarki lub wpisz miasto ręcznie.');
       },
       { timeout: 10000 }
     );
+  };
+
+  // 2. Zamiana wpisanego tekstu (np. "Warszawa") na współrzędne przez Nominatim
+  const handleCitySearch = async () => {
+    if (location.trim().length < 3) return;
+    
+    setLoading(true);
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=pl&q=${encodeURIComponent(location)}`);
+      const data = await res.json();
+      
+      if (data && data.length > 0) {
+        const { lat, lon, display_name } = data[0];
+        // Gdy mamy współrzędne miasta, szukamy szpitala
+        await findNearestHospital(parseFloat(lat), parseFloat(lon), display_name.split(',')[0]);
+      } else {
+        setHospitalInfo({ name: 'Nie znaleziono miejscowości', address: 'Sprawdź poprawność wpisanej nazwy.' });
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Błąd wyszukiwania miejscowości:", error);
+      setLoading(false);
+      alert('Błąd wyszukiwania miejscowości.');
+    }
   };
 
   // Automatyczne zapytanie o lokalizację przy wejściu
@@ -84,21 +156,12 @@ export default function LocationPage({ onHome, caseData }) {
   }, []);
 
   const handleLocationChange = (e) => {
-    const val = e.target.value;
-    setLocation(val);
-
-    if (val.toLowerCase().includes('kraków') || val.toLowerCase().includes('krakow')) {
-      setHospitalInfo({
-        name: 'Szpital Uniwersytecki w Krakowie (SOR)',
-        address: 'ul. Jakubowskiego 2, Kraków'
-      });
-    } else if (val.trim().length > 2) {
-      setHospitalInfo({
-        name: 'Szpital Rejonowy / SOR',
-        address: `Najbliższy oddział ratunkowy dla lokalizacji: ${val}`
-      });
-    } else {
-      setHospitalInfo(null);
+    setLocation(e.target.value);
+  };
+  
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleCitySearch();
     }
   };
 
@@ -345,14 +408,24 @@ export default function LocationPage({ onHome, caseData }) {
           </div>
 
           {/* Pole lokalizacji */}
-          <div className="location-input-row">
+          <div className="location-input-row" style={{ display: 'flex', gap: '10px' }}>
             <input 
               type="text" 
               className="date-input location-page-input"
-              placeholder="np. Kraków lub użyj GPS"
+              placeholder="Wpisz miasto (np. Krosno) i wciśnij Enter"
               value={location}
               onChange={handleLocationChange}
+              onKeyDown={handleKeyDown}
+              style={{ flex: 1 }}
             />
+            <button 
+              onClick={handleCitySearch}
+              className="location-search-btn"
+              title="Szukaj po nazwie miejscowości"
+              style={{ padding: '0 15px', borderRadius: '8px', border: 'none', background: '#6d84fb', color: '#fff', cursor: 'pointer', fontWeight: 'bold' }}
+            >
+               Szukaj
+            </button>
             <button 
               onClick={handleGetGeoLocation}
               className="location-gps-btn"

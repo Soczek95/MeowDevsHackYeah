@@ -123,7 +123,7 @@ export default function FormPage({ onBack, onCreate, onHome }) {
             )}
 
             <button className="btn-text rules-back-btn" onClick={onBack}>
-              powrót
+              Powrót
             </button>
           </div>
         </main>

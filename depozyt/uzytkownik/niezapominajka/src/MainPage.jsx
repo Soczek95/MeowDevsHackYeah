@@ -70,16 +70,16 @@ export default function MainPage({ onNavigate, onOpenAccess }) {
         <section className="info-sections">
           {/* Dodana sekcja "NIE jesteś sam/a..." na samym początku */}
           <div className="text-block" id="uzyskaj-pomoc">
-              <h3>Gdzie szukać wsparcia?<br />Nie musisz przez to przechodzić sam/a:</h3>
-              
-              <p>→ <strong>Fundacja Feminoteka: 888 88 33 88</strong> (pon.-pt. w godz. 11:00–19:00). Specjalistyczna, poufna pomoc psychologiczna i prawna dla kobiet, które doświadczyły przemocy seksualnej.</p>
-              
-              <p>→ <strong>Centrum Praw Kobiet: 800 107 777</strong> (całodobowo). Ogólnopolski telefon interwencyjny zapewniający natychmiastowe wsparcie i pomoc w kryzysie.</p>
-              
-              <p>→ <strong>Niebieska Linia: 800 120 002</strong> (całodobowo). Ogólnopolskie pogotowie oferujące wsparcie psychologiczne dla wszystkich osób doświadczających przemocy (niezależnie od płci).</p>
-              
-              <p>→ <strong>Bezpośrednie zagrożenie: 112</strong>. Jeśli czujesz, że grozi Ci niebezpieczeństwo lub potrzebujesz pilnej pomocy medycznej, zadzwoń pod numer alarmowy.</p>
-            </div>
+            <h3>Gdzie szukać wsparcia?<br />Nie musisz przez to przechodzić sam/a:</h3>
+            
+            <p>→ <strong>Fundacja Feminoteka: 888 88 33 88</strong> (pon.-pt. w godz. 11:00–19:00). Specjalistyczna, poufna pomoc psychologiczna i prawna dla kobiet, które doświadczyły przemocy seksualnej.</p>
+            
+            <p>→ <strong>Centrum Praw Kobiet: 800 107 777</strong> (całodobowo). Ogólnopolski telefon interwencyjny zapewniający natychmiastowe wsparcie i pomoc w kryzysie.</p>
+            
+            <p>→ <strong>Niebieska Linia: 800 120 002</strong> (całodobowo). Ogólnopolskie pogotowie oferujące wsparcie psychologiczne dla wszystkich osób doświadczających przemocy (niezależnie od płci).</p>
+            
+            <p>→ <strong>Bezpośrednie zagrożenie: 112</strong>. Jeśli czujesz, że grozi Ci niebezpieczeństwo lub potrzebujesz pilnej pomocy medycznej, zadzwoń pod numer alarmowy.</p>
+          </div>
 
           <div className="text-block" id="o-nas">
             <h3>O nas:</h3>

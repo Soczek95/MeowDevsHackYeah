@@ -73,7 +73,8 @@ export default function App() {
     if (loggedCase) {
       return (
         <CaseDashboardPage 
-          caseId={loggedCase.code}
+          caseId={loggedCase.code.trim()}
+          caseKey={loggedCase.key.trim()}
           serverData={loggedCase.serverData}
           onHome={() => { setCurrentView('main'); setLoggedCase(null); }}
         />

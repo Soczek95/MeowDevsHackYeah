@@ -66,7 +66,7 @@ export default function RulesPage({ onAccept, onBack, onHome }) {
             </button>
 
             <button className="btn-text rules-back-btn" onClick={onBack}>
-              mam już sprawę
+              Mam już sprawę
             </button>
           </div>
         </main>
