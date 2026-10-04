@@ -58,7 +58,20 @@ def get_case_status(case_id: str,x_case_key: str = Header(...), db: sqlite3.Conn
         raise HTTPException(status_code=404, detail="Case not found")
     if case["key_hash"] != hash_key(x_case_key):
         raise HTTPException(status_code=403, detail="Invalid key")
-    return {"case_id": case_id, "status": case["status"], "origin": case["origin"], "created_at": case["created_at"], "expires_at": case["expires_at"]}
+    samples = db.execute("""
+        SELECT id, type, state, created_at, updated_at 
+        FROM samples 
+        WHERE case_id = ?
+        ORDER BY created_at DESC
+    """, (case_id,)).fetchall()
+    return {
+        "case_id": case_id, 
+        "status": case["status"], 
+        "origin": case["origin"], 
+        "created_at": case["created_at"], 
+        "expires_at": case["expires_at"],
+        "samples": [dict(sample) for sample in samples]  
+    }
 
 class DecisionRequest(BaseModel):
     decision: str
