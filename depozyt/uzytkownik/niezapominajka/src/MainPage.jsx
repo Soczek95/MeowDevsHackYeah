@@ -89,7 +89,7 @@ export default function MainPage({ onNavigate, onOpenAccess }) {
 						<h3>
 							Gdzie szukać wsparcia?
 							<br />
-							Nie musisz przez to przechodzić sam/a:
+							Nie musisz przez to przechodzić w pojedynkę:
 						</h3>
 
 						<p>
@@ -110,6 +110,10 @@ export default function MainPage({ onNavigate, onOpenAccess }) {
 						<p>
 							→ <strong>Bezpośrednie zagrożenie: 112</strong>. Jeśli czujesz, że grozi Ci niebezpieczeństwo lub
 							potrzebujesz pilnej pomocy medycznej, zadzwoń pod numer alarmowy.
+						</p>
+						<p>
+							→ <strong>Telefon Zaufania dla Dzieci i Młodzieży: 116 111</strong> (całodobowo). Bezpłatna pomoc i
+							wsparcie dla dzieci oraz młodzieży.
 						</p>
 					</div>
 
