@@ -4,12 +4,19 @@ import { api } from '../../../frontend/src/shared/api';
 
 // Nazwy decyzji i statusów MUSZĄ być identyczne jak w backendzie (app/cases.py)
 const DECISION_EXTEND = 'EXTEND';
-const DECISION_CLOSE = 'CLOSE';
-const FINAL_STATUSES = ['CLOSED', 'RELEASED'];
+const DECISION_CLOSE = 'REQUEST_CLOSURE';
+const FINAL_STATUSES = ['CLOSED', 'RELEASED', 'ZAMKNIETA', 'WYDANA'];
 
 // Tłumaczenia wartości z bazy na polski
-const SAMPLE_TYPES = { URINE: 'Mocz', SWAB: 'Wymaz', BLOOD: 'Krew' };
-const SAMPLE_STATES = { COLLECTED: 'pobrana', SEALED: 'zabezpieczona', STORED: 'w depozycie' };
+const SAMPLE_TYPES = { 
+  URINE: 'Mocz', SWAB: 'Wymaz', BLOOD: 'Krew',
+  MOCZ: 'Mocz', WYMAZ: 'Wymaz', KREW: 'Krew' 
+};
+
+const SAMPLE_STATES = { 
+  COLLECTED: 'pobrana', SEALED: 'zabezpieczona', STORED: 'w depozycie',
+  ZMAGAZYNOWANA: 'w depozycie', ZAPLOMBOWANA: 'zabezpieczona (zaplombowana)', POBRANA: 'pobrana'
+};
 
 const TITLES = {
   CREATED: 'Sprawa utworzona. Udaj się do szpitala, aby zabezpieczyć próbki.',
@@ -17,6 +24,7 @@ const TITLES = {
   IN_DEPOSIT: 'Twoje próbki są bezpiecznie przechowywane.',
   RELEASED: 'Twoja sprawa została przekazana policji.',
   CLOSED: 'Twoja sprawa została zamknięta.',
+  W_DEPOZYCIE: 'Twoje próbki są bezpiecznie przechowywane.',
 };
 
 export default function CaseDashboardPage({ caseId, caseKey, serverData, onHome }) {
@@ -147,7 +155,7 @@ export default function CaseDashboardPage({ caseId, caseKey, serverData, onHome 
               {samples.length > 0 ? (
                 samples.map((sample, index) => (
                   <p key={index}>
-                    {SAMPLE_TYPES[sample.type] || sample.type}: {SAMPLE_STATES[sample.status] || sample.status}
+                    {SAMPLE_TYPES[sample.type] || sample.type}: {SAMPLE_STATES[sample.state] || sample.state}
                   </p>
                 ))
               ) : (
