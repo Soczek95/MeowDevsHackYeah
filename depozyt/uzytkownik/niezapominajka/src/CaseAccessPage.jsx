@@ -1,26 +1,44 @@
 import { useState } from 'react';
 import flowerIcon from './assets/famicons_flower-sharp.svg';
+import { api } from '../../../frontend/src/shared/api'; // <-- Zaimportuj moduł API
 
 export default function CaseAccessPage({ onHome, onGoToRules, onSubmitCase }) {
   const [caseCode, setCaseCode] = useState('');
   const [caseKey, setCaseKey] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Funkcja szybkiego opuszczenia strony (dla ikony kwiatka)
   const handleQuickExit = () => {
     window.location.replace('https://www.google.com');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Tutaj możesz obsłużyć logikę zatwierdzania i logowania do sprawy
-    if (onSubmitCase) onSubmitCase(caseCode, caseKey);
+    setLoading(true);
+    setErrorMessage('');
+
+    try {
+      // Wywołujemy endpoint z api.ts używając wpisanego kodu i klucza
+      const response = await api.getCaseStatus(caseCode.trim(), caseKey.trim());
+      
+      console.log("Sukces logowania do sprawy:", response);
+      
+      // Jeśli zapytanie się powiodło, przekazujemy dane wyżej
+      if (onSubmitCase) {
+        onSubmitCase(caseCode, caseKey, response);
+      }
+    } catch (err) {
+      console.error("Błąd autoryzacji sprawy:", err);
+      setErrorMessage('Nie udało się uzyskać dostępu. Sprawdź poprawność kodu sprawy oraz klucza.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="layout-container-sub">
       <div className="main-content">
         <header className="header-section">
-          {/* Napis "niezapominajka" prowadzi do main */}
           <div 
             onClick={onHome} 
             style={{ cursor: 'pointer', display: 'inline-block' }}
@@ -34,7 +52,6 @@ export default function CaseAccessPage({ onHome, onGoToRules, onSubmitCase }) {
               Kliknij kwiatek,<br />aby przejść do bezpiecznej strony
             </span>
 
-            {/* Ikona kwiatka prowadzi do bezpiecznej strony */}
             <button 
               className="login-btn" 
               aria-label="Szybkie wyjście na bezpieczną stronę" 
@@ -61,6 +78,7 @@ export default function CaseAccessPage({ onHome, onGoToRules, onSubmitCase }) {
                 className="date-input" 
                 value={caseCode}
                 onChange={(e) => setCaseCode(e.target.value)}
+                required
               />
             </div>
 
@@ -71,15 +89,22 @@ export default function CaseAccessPage({ onHome, onGoToRules, onSubmitCase }) {
                 className="date-input" 
                 value={caseKey}
                 onChange={(e) => setCaseKey(e.target.value)}
+                required
               />
             </div>
 
-            <button type="submit" className="support-button rules-btn">
-              Zatwierdź
+            {/* Wyświetlanie błędu, jeśli logowanie się nie powiodło */}
+            {errorMessage && (
+              <p style={{ color: '#ffd1d1', fontSize: '0.9rem', textAlign: 'center', margin: '5px 0' }}>
+                {errorMessage}
+              </p>
+            )}
+
+            <button type="submit" className="support-button rules-btn" disabled={loading}>
+              {loading ? 'Sprawdzanie...' : 'Zatwierdź'}
             </button>
           </form>
 
-          {/* Przycisk prowadzący z powrotem do zasad (rules) */}
           <button className="btn-text rules-back-btn" onClick={onGoToRules}>
             chce założyć sprawę
           </button>

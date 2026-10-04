@@ -1,18 +1,17 @@
 import { useState } from 'react';
-import flowerIcon from './assets/famicons_flower-sharp.svg'; // Dopasuj ścieżkę względną, jeśli plik jest w innym folderze
+import flowerIcon from './assets/famicons_flower-sharp.svg'; 
 
-export default function LocationPage({ onHome }) {
+// Odbieramy caseData w propsach
+export default function LocationPage({ onHome, caseData }) {
   const [location, setLocation] = useState('');
   const [hospitalInfo, setHospitalInfo] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [caseCode] = useState(() => Math.random().toString(36).substring(2, 10).toUpperCase());
-  const [caseKey] = useState(() => Math.random().toString(36).substring(2, 10).toUpperCase());
 
   const handleQuickExit = () => {
     window.location.replace('https://www.google.com');
   };
 
-  // Baza głównych szpitali z SOR w Krakowie (pewne i sprawdzone adresy)
+  // Baza głównych szpitali z SOR w Krakowie
   const krakowHospitals = [
     { name: 'Szpital Uniwersytecki w Krakowie (SOR)', address: 'ul. Jakubowskiego 2, Kraków', lat: 50.0121, lon: 19.9856 },
     { name: 'Szpital Specjalistyczny im. G. Narutowicza (SOR)', address: 'ul. Prądnicka 35-37, Kraków', lat: 50.0812, lon: 19.9431 },
@@ -20,12 +19,10 @@ export default function LocationPage({ onHome }) {
     { name: 'Wojskowy Szpital Kliniczny z Polikliniką (SOR)', address: 'ul. Wrocławska 1-3, Kraków', lat: 50.0765, lon: 19.9287 },
   ];
 
-  // Funkcja obliczająca najbliższy szpital na podstawie współrzędnych GPS
   const findNearestHospital = (userLat, userLon, placeName = '') => {
     setLoading(true);
 
     setTimeout(() => {
-      // Proste obliczenie odległości (twierdza Pitagorasa w przybliżeniu dla km)
       let nearest = krakowHospitals[0];
       let minDistance = Number.MAX_VALUE;
 
@@ -47,7 +44,6 @@ export default function LocationPage({ onHome }) {
     }, 400);
   };
 
-  // Obsługa GPS HTML5
   const handleGetGeoLocation = () => {
     if (!navigator.geolocation) {
       alert('Twoja przeglądarka nie wspiera geolokalizacji.');
@@ -59,7 +55,6 @@ export default function LocationPage({ onHome }) {
       (position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        // Domyślnie dla Krakowa lub okolic szukamy z naszej zweryfikowanej listy SOR-ów
         findNearestHospital(lat, lon, 'Twoja lokalizacja GPS (Kraków i okolice)');
       },
       () => {
@@ -70,13 +65,11 @@ export default function LocationPage({ onHome }) {
     );
   };
 
-  // Wyszukiwanie tekstowe (np. wpisanie "Kraków")
   const handleLocationChange = (e) => {
     const val = e.target.value;
     setLocation(val);
 
     if (val.toLowerCase().includes('kraków') || val.toLowerCase().includes('krakow')) {
-      // Jeśli użytkownik wpisze Kraków, domyślnie podajemy Szpital Uniwersytecki jako główny SOR
       setHospitalInfo({
         name: 'Szpital Uniwersytecki w Krakowie (SOR)',
         address: 'ul. Jakubowskiego 2, Kraków'
@@ -113,13 +106,13 @@ export default function LocationPage({ onHome }) {
                 aria-label="Szybkie wyjście na bezpieczną stronę" 
                 onClick={handleQuickExit}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
-                >
+            >
                 <img 
                     src={flowerIcon} 
                     alt="Kwiatek - szybkie wyjście" 
                     style={{ width: '32px', height: '32px', filter: 'brightness(0) invert(1)' }} 
                 />
-                </button>
+            </button>
           </div>
         </header>
 
@@ -174,8 +167,9 @@ export default function LocationPage({ onHome }) {
 
               <div className="case-card-container">
                 <div className="case-card-left">
-                  <p><strong>KOD SPRAWY:</strong> {caseCode}</p>
-                  <p><strong>KLUCZ SPRAWY:</strong> {caseKey}</p>
+                  {/* Wyświetlamy dane faktycznie zwrócone z API */}
+                  <p><strong>KOD SPRAWY:</strong> {caseData ? caseData.case_id : 'Tworzenie sprawy...'}</p>
+                  <p><strong>KLUCZ SPRAWY:</strong> {caseData ? caseData.case_key : 'Tworzenie sprawy...'}</p>
                 </div>
                 <div className="case-card-qr">
                   <span>KOD QR</span>

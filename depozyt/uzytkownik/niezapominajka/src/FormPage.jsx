@@ -110,9 +110,16 @@ export default function FormPage({ onBack, onCreate, onHome }) {
 
           <div className="form-buttons-group">
             {isValid && !isFuture && (
-              <button className="support-button rules-btn" onClick={onCreate}>
-                UTWÓRZ SPRAWĘ
-              </button>
+              <button 
+                className="support-button rules-btn" 
+                onClick={async () => {
+                  if (typeof onCreate === 'function') {
+                    await onCreate();
+                  }
+                }}
+>
+  UTWÓRZ SPRAWĘ
+</button>
             )}
 
             <button className="btn-text rules-back-btn" onClick={onBack}>
