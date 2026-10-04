@@ -132,7 +132,7 @@ npm run dev
 Windows (PowerShell i cmd):
 
 ```powershell
-cd użytkownik\niezapominajka
+cd uzytkownik\niezapominajka
 npm install
 npm run dev
 ```
