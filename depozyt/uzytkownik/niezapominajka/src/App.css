@@ -1,0 +1,1108 @@
+/* =========================================
+   RESETA I WSPÓLNE USTAWIENIA
+========================================= */
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100% !important;
+  box-sizing: border-box;
+  /* Usuwamy overflow: hidden stąd, żeby MainPage mogła się scrollować */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --font-heading: 'Abril Fatface', serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+/* Styl dla strony głównej - pozwala na scrollowanie (min-height i automatyczna wysokość) */
+.layout-container {
+  font-family: var(--font-body);
+  color: white;
+  background: linear-gradient(180deg, #4d6bff 0%, #ad99ff 45%, #979afc 70%, #7da2fb 100%);
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+  -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.1);
+}
+
+.layout-container .support-button {
+  font-size: 1.6rem;
+  padding: 20px 80px;
+}
+
+/* Styl dla podstron (Rules, Form, Location, Code) - blokuje scroll i zamyka w 100vh */
+.layout-container-sub {
+  font-family: var(--font-body);
+  color: white;
+  background: linear-gradient(180deg, #4967fb 0%, #7d90fa 50%, #a799f0 100%);
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+  -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Blokuje przewijanie tylko na podstronach */
+  padding-bottom: 10px; 
+}
+
+
+/* =========================================
+   STYLE DLA: MainPage
+========================================= */
+.header-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px; 
+  width: 100%;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+
+.nav-menu ul {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+}
+
+.nav-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.login-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* GŁÓWNY OBSZAR */
+.main-content {
+  flex-grow: 1;
+  padding: 1px 40px 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-section {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 20px !important; 
+  padding-bottom: 0px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.support-heading {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 3.5rem;
+  margin-top: 50px;
+  margin-bottom: 24px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.support-description {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  font-weight: 400;
+  margin-bottom: 30px; 
+  max-width: 1100px;
+}
+
+.support-button {
+  background-color: white;
+  color: #333; 
+  border: none;
+  padding: 20px 80px;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 0.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+  cursor: pointer;
+  margin-bottom: 20px; 
+
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  text-shadow: none;
+  -webkit-text-stroke: 0;
+}
+
+.support-microcopy {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  font-weight: 400;
+  opacity: 0.95;
+  max-width: 4100px;
+  margin: 0 auto;
+  margin-top: 45px;
+  margin-bottom: 60px; 
+}
+
+.support-button:hover {
+  transform: translateY(-4px);
+  background-color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.support-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* SEKCJE TEKSTOWE */
+.info-sections {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  text-align: left;
+  
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  pointer-events: none; 
+}
+
+.info-sections.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.text-block h3 {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: normal;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.text-block p {
+  font-size: 1.1rem;
+  line-height: 1.65; 
+  font-weight: 400; 
+  margin-bottom: 8px;
+}
+
+/* STOPKA */
+.footer-section {
+  text-align: left;
+  padding: 20px 40px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* =========================================
+   STYLE DLA: RulesPages
+========================================= */
+
+.layout-container-sub .main-content {
+  padding: 1px 30px 20px 30px;
+  overflow-y: auto;
+}
+
+.rules-content-custom {
+  max-width: 1300px;
+  width: 100%;
+  margin: 5px auto 10px auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px 36px;
+
+  /* Glass morphism */
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+
+  text-shadow: none;
+  -webkit-text-stroke: 0;
+  color: #1a1a1a;
+  font-family: var(--font-body);
+}
+
+.rules-content-custom h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-family: var(--font-body);
+  color: #1a1a1a;
+}
+
+.rules-intro, 
+.rules-exceptions-title, 
+.rules-text-secondary {
+  font-size: 0.95rem; /* Większy niż poprzednio 0.82rem */
+  line-height: 1.5;
+  color: #333;
+  font-family: var(--font-body);
+}
+
+.rules-exceptions-title {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.rules-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.95rem; /* Większy niż 0.82rem */
+  line-height: 1.45;
+  color: #333;
+  font-family: var(--font-body);
+}
+
+.rules-text-minor {
+  font-size: 0.9rem; /* Większy niż 0.78rem */
+  line-height: 1.45;
+  color: #1a1a1a;
+  background: rgba(109, 132, 251, 0.12);
+  padding: 10px 16px;
+  border-radius: 8px;
+  border-left: 4px solid #6d84fb;
+  font-family: var(--font-body);
+}
+
+/* Grupa przycisków */
+.rules-buttons-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0; /* Usunięty gap – odstęp robi margin przycisku niżej */
+  margin-top: 10px;
+}
+
+.rules-btn {
+  width: auto !important;
+  min-width: 220px;
+  max-width: 360px;
+  align-self: center;
+  font-size: 0.8rem !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  font-family: var(--font-body);
+}
+
+/* Przycisk "mam już sprawę" – mniejszy odstęp od ROZUMIEM */
+.rules-back-btn {
+  font-family: var(--font-body);
+  font-size: 0.64rem;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  color: #555;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
+  cursor: pointer;
+  padding: 5px 18px; /* Zmniejszone z 30px – mniejsza odległość */
+  margin-bottom: 0 !important;
+  margin-top: 10px;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.rules-back-btn::before {
+  font-size: 0.64rem;
+}
+
+/* Prosty hover – tylko zmiana koloru */
+.rules-back-btn:hover {
+  color: #000;
+  border-color: rgba(0, 0, 0, 0.5);
+}
+/* =========================================
+   STYLE DLA: FormPage (ujednolicone z RulesPage)
+========================================= */
+
+.form-page-box {
+  max-width: 900px;
+  width: 100%;
+  margin: 10px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 35px 45px;
+
+  /* Glass morphism - ten sam styl co RulesPage */
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+
+  text-shadow: none;
+  -webkit-text-stroke: 0;
+  color: #1a1a1a;
+  font-family: var(--font-body);
+}
+
+.form-page-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Input w stylu FormPage - ciemniejszy tekst i lepszy kontrast */
+.form-date-input {
+  width: 100%;
+  max-width: 500px;
+  height: 52px;
+  background-color: #ffffff;
+  border: 2px solid rgba(109, 132, 251, 0.3);
+  border-radius: 12px;
+  padding: 0 18px;
+  font-size: 1.1rem;
+  color: #1a1a1a;
+  outline: none;
+  font-family: var(--font-body);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  align-self: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-date-input:focus {
+  border-color: #6d84fb;
+  box-shadow: 0 4px 20px rgba(109, 132, 251, 0.3);
+}
+
+/* Tekst wyników - teraz ciemny, bo box jest jasny */
+.form-page-box .form-result-text {
+  color: #1a1a1a;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: left;
+  background: rgba(109, 132, 251, 0.08);
+  padding: 15px 20px;
+  border-radius: 10px;
+  border-left: 4px solid #6d84fb;
+  margin-top: 5px;
+}
+
+.form-page-box .form-result-text p {
+  margin-bottom: 6px;
+}
+
+.form-page-box .form-result-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Wariant błędu (data z przyszłości) */
+.form-page-box .form-result-error {
+  background: rgba(220, 38, 38, 0.08);
+  border-left: 4px solid #dc2626;
+  color: #7f1d1d;
+}
+
+/* Grupa przycisków - wyśrodkowana */
+.form-page-box .form-buttons-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Przycisk "UTWÓRZ SPRAWĘ" - dziedziczy po rules-btn, ale dopasowany do jasnego tła */
+.form-page-box .support-button.rules-btn {
+  background-color: #6d84fb;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem !important;
+  padding: 14px 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(109, 132, 251, 0.35);
+  text-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.form-page-box .support-button.rules-btn:hover {
+  background-color: #5a73e0;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(109, 132, 251, 0.45);
+}
+
+/* Przycisk "powrót" - dopasowany do jasnego tła */
+.form-page-box .rules-back-btn {
+  color: #555;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.form-page-box .rules-back-btn:hover {
+  color: #000;
+  border-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* =========================================
+   STYLE DLA: LocationPage (ujednolicone z RulesPage/FormPage)
+========================================= */
+
+.location-page-box {
+  max-width: 90%;
+  width: 100%;
+  margin: 10px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 35px 45px;
+
+  /* Glass morphism - ten sam styl co RulesPage i FormPage */
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+
+  text-shadow: none;
+  -webkit-text-stroke: 0;
+  color: #1a1a1a;
+  font-family: var(--font-body);
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  scrollbar-width: hidden;
+}
+
+.location-page-box::-webkit-scrollbar {
+  width: 8px;
+}
+.location-page-box::-webkit-scrollbar-thumb {
+  background: rgba(109, 132, 251, 0.4);
+  border-radius: 4px;
+}
+
+/* Nagłówek sekcji */
+.location-header-section {
+  text-align: center;
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.location-page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.location-page-intro {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.location-page-intro strong {
+  color: #6d84fb;
+}
+
+/* Pole lokalizacji */
+.location-input-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 500px;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.location-page-input {
+  flex: 1;
+  max-width: 340px;
+  margin: 0 !important;
+  background-color: #ffffff;
+  border: 2px solid rgba(109, 132, 251, 0.3);
+  border-radius: 12px;
+  height: 52px;
+  padding: 0 18px;
+  font-size: 1rem;
+  color: #1a1a1a;
+  outline: none;
+  font-family: var(--font-body);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.location-page-input:focus {
+  border-color: #6d84fb;
+  box-shadow: 0 4px 20px rgba(109, 132, 251, 0.3);
+}
+
+.location-gps-btn {
+  background-color: #6d84fb;
+  border: none;
+  border-radius: 12px;
+  padding: 0 22px;
+  cursor: pointer;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(109, 132, 251, 0.3);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.location-gps-btn:hover {
+  background-color: #5a73e0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(109, 132, 251, 0.4);
+}
+
+.location-loading {
+  font-size: 0.9rem;
+  color: #6d84fb;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+/* Dopasowanie tekstów w boxie do jasnego tła */
+.location-page-box .med-info-text {
+  color: #333;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.location-page-box .med-info-text strong {
+  color: #1a1a1a;
+}
+
+.location-page-box .warning-text {
+  color: #dc2626;
+  font-size: 1rem;
+  text-align: center;
+  margin: 15px 0;
+  width: 100%;
+}
+
+/* Karta z danymi sprawy */
+.location-page-box .case-card-container {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(109, 132, 251, 0.2);
+  width: 100%;
+}
+
+.location-page-box .case-card-left {
+  text-align: left;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.location-page-box .case-card-left p {
+  margin: 0;
+}
+
+/* Przycisk pobierania */
+.download-info-btn {
+  background: #6d84fb;
+  border: none;
+  color: #ffffff;
+  padding: 14px 30px;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(109, 132, 251, 0.35);
+  align-self: center;
+}
+
+.download-info-btn:hover {
+  background: #5a73e0;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(109, 132, 251, 0.45);
+}
+/* =========================================
+   STYLE DLA: CodePage
+========================================= */
+
+.code-main {
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.instructions-text {
+  text-align: left;
+  color: #1a1a1a;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  width: 100%;
+}
+
+.instructions-text p {
+  margin-bottom: 5px;
+}
+
+.code-box {
+  background-color: #d1d5db;
+  width: 100%;
+  padding: 30px 40px 10px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.text-code {
+  font-size: 1.5rem;
+  color: #1a1a1a;
+}
+
+.qr-placeholder {
+  background-color: #9ca3af;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1a1a1a;
+  font-size: 1.2rem;
+}
+
+.download-link {
+  background: none;
+  border: none;
+  color: #1a1a1a;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.download-link:hover {
+  text-decoration: underline;
+}
+
+.case-access-main {
+  max-width: 600px;
+  width: 100%;
+  margin: 30px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 0 20px;
+  color: white;
+}
+
+.case-access-main h2 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.case-access-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  align-items: center;
+}
+
+.input-group-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 420px;
+  gap: 6px;
+  font-size: 1rem;
+}
+
+.input-group-row label {
+  color: white;
+  font-weight: 400;
+}
+
+.case-access-form .date-input {
+  width: 100%;
+  max-width: 420px;
+  height: 48px;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 15px;
+  font-size: 1.1rem;
+  color: #333;
+  outline: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================
+   STYLE DLA: CaseDashboardPage (Wersja 3D)
+========================================= */
+
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 90%;
+  margin: 0 auto;
+   flex: 1;                    /* <-- DODAJ TO */
+  overflow-y: hidden;           /* <-- DODAJ TO */
+  scrollbar-width: none; 
+}
+.samples-empty {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  padding: 5px 0;
+}
+
+.layout-container-sub .main-content {
+  padding: 1px 30px 1px 30px;
+  overflow: hidden;     /* <-- ZAMIAST overflow-y: auto */
+  flex-grow: 1;
+}
+
+/* --- Główny Box z informacjami (Efekt 3D i szkła) --- */
+.dashboard-info-box {
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.2) 0%, 
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  backdrop-filter: blur(20px); /* Rozmycie tła pod spodem */
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 35px 40px;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 20px;
+  
+  /* Cień 3D - kluczowy element */
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15), /* Duży, miękki cień zewnętrzny */
+    0 5px 15px rgba(0, 0, 0, 0.08),   /* Mniejszy cień dla definicji */
+    inset 0 1px 0 rgba(255, 255, 255, 0.3); /* Jasna linia na górnej krawędzi */
+  
+  /* Delikatne obramowanie */
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-details {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 50px;
+}
+
+.dashboard-samples {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 50px;
+}
+
+.samples-title {
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+/* --- Sekcja Akcji --- */
+.dashboard-actions-section {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.actions-heading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.dashboard-btn {
+  background: linear-gradient(180deg, #ffffff 0%, #f0f2f5 100%);
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  min-width: 150px;   /* <-- Zmniejszone z 180px */
+  padding: 12px 18px; /* <-- Zmniejszone z 15px 25px */
+  font-size: 0.85rem; /* <-- Zmniejszone z 0.95rem */
+
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Cień 3D dla przycisków */
+  box-shadow: 
+    0 10px 20px rgba(0, 0, 0, 0.1),
+    0 2px 5px rgba(0, 0, 0, 0.05),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.05); /* Lekki efekt wklęsłości na dole */
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.dashboard-btn:hover {
+  transform: translateY(-4px); /* Unoszenie przy najechaniu */
+  box-shadow: 
+    0 20px 30px rgba(0, 0, 0, 0.15),
+    0 5px 10px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+}
+
+
+
+.dashboard-btn:active {
+  transform: translateY(-1px); /* Efekt wciśnięcia */
+  box-shadow: 
+    0 5px 10px rgba(0, 0, 0, 0.1),
+    inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Stopka --- */
+.dashboard-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 10px; /* <-- ZMNIEJSZONE Z 18px */
+  margin-top: 5px;   /* <-- ZMNIEJSZONE Z 15px */
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;             /* <-- DODAJ TO */
+}
+
+.footer-link {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.footer-link:hover {
+  opacity: 1;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Ukrycie domyślnego nagłówka "Panel Zarządzania Sprawą", jeśli był */
+.merged-flow-main h2 {
+  display: none;
+}
+
+/* Przycisk pobierania informacji - wygląda jak link, ale jest klikalny */
+.download-info-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #000;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-info-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* =========================================
+   STYLE DLA: Sekcji "Co robić" w LocationPage
+========================================= */
+
+.med-info-text-highlight {
+  color: #1a1a1a;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-align: left;
+  background: rgba(109, 132, 251, 0.1);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border-left: 5px solid #6d84fb;
+  margin-bottom: 25px;
+}
+
+.med-steps-container {
+  text-align: left;
+  color: #1a1a1a;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 20px 25px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.med-steps-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.med-steps-intro {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.med-step-group {
+  margin-bottom: 20px;
+}
+
+.med-step-group:last-child {
+  margin-bottom: 0;
+}
+
+.med-step-group h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #4967fb;
+  margin-bottom: 8px;
+}
+
+.med-step-subtext {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.med-step-group ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.med-step-group li {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.med-step-group li strong {
+  color: #1a1a1a;
+}
