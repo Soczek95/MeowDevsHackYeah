@@ -26,10 +26,14 @@ def init_db():
               destroy_after TEXT
             );
             CREATE TABLE IF NOT EXISTS samples (
-              id TEXT PRIMARY KEY,
-              case_id TEXT NOT NULL REFERENCES cases(id),
-              type TEXT NOT NULL,
-              state TEXT NOT NULL
+                id TEXT PRIMARY KEY,
+                case_id TEXT NOT NULL,
+                type TEXT NOT NULL,
+                state TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (case_id) REFERENCES cases(id)
+
             );
             CREATE TABLE IF NOT EXISTS ledger (
               case_id TEXT NOT NULL,
