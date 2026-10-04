@@ -28,7 +28,7 @@ export default function HospitalList() {
   // Stan dla listy wszystkich próbek
   const [allSamples, setAllSamples] = useState([]);
   
-  const [selectedEvent, setSelectedEvent] = useState('SEALED');
+  const [selectedEvent, setSelectedEvent] = useState('ZAPLOMBOWANA');
   const [actionLoading, setActionLoading] = useState(false);
 
   // Funkcja pobierająca listę wszystkich próbek przy użyciu api.getAllSamples()
@@ -347,9 +347,10 @@ export default function HospitalList() {
                 onChange={(e) => setSampleType(e.target.value)}
                 style={{ width: '100%', background: '#D8D5CC', border: 'none', padding: '0 24px', height: '80px', borderRadius: '24px', fontSize: '1.2rem', outline: 'none', color: '#101010', boxSizing: 'border-box' }}
               >
-                <option value="SWAB">Wymaz (SWAB)</option>
-                <option value="BLOOD">Krew (BLOOD)</option>
-                <option value="URINE">Mocz (URINE)</option>
+                <option value="WYMAZ">Wymaz</option>
+                <option value="KREW">Krew</option>
+                <option value="MOCZ">Mocz</option>
+                <option value="ODZIEZ">Odzież</option>
               </select>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
@@ -476,8 +477,8 @@ export default function HospitalList() {
                 onChange={(e) => setSelectedEvent(e.target.value)}
                 style={{ width: '100%', background: '#D8D5CC', border: 'none', padding: '0 24px', height: '80px', borderRadius: '24px', fontSize: '1.1rem', outline: 'none', color: '#101010', boxSizing: 'border-box' }}
               >
-                <option value="SEALED">Zabezpieczono / Opięczętowane (SEALED)</option>
-                <option value="STORED">Zmagazynowano w depozycie (STORED)</option>
+                <option value="ZAPLOMBOWANO">Zaplombowano</option>
+                <option value="ZMAGAZYNOWANA">Zmagazynowane</option>
               </select>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
