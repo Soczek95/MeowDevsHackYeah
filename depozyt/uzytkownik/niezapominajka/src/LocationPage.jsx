@@ -14,86 +14,34 @@ export default function LocationPage({ onHome, caseData }) {
     window.location.replace('https://www.google.com');
   };
 
-  // Precyzyjne obliczanie odległości (wzór Haversine)
-  const getDistanceKm = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Promień Ziemi w km
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) ** 2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  };
+  // Sztywna lista 7 fikcyjnych szpitali dla prototypu
+  const fictionalHospitals = [
+    { name: 'Szpital Kliniczny "Nowa Era" (SOR)', address: 'ul. Medyczna 4' },
+    { name: 'Miejskie Centrum Ratownictwa (SOR)', address: 'ul. Szybkiej Pomocy 1' },
+    { name: 'Szpital Specjalistyczny im. A. Fleminga (SOR)', address: 'ul. Nadziei 12' },
+    { name: 'Wojewódzki Szpital Zespolony (SOR)', address: 'ul. Spokojna 88' },
+    { name: 'Uniwersytecki Szpital Ratunkowy (SOR)', address: 'ul. Akademicka 15' },
+    { name: 'Szpital Rejonowy "Dobre Serce" (SOR)', address: 'ul. Ratowników 3' },
+    { name: 'Instytut Medycyny Ratunkowej (SOR)', address: 'ul. Graniczna 10' }
+  ];
 
-  // 1. Szukanie w Overpass API na podstawie współrzędnych
-  const findNearestHospital = async (userLat, userLon, placeName = '') => {
+  // Symulacja wyszukiwania i losowania szpitala
+  const pickRandomHospital = (placeName = null) => {
     setLoading(true);
-    try {
-      // Zapytanie o szpitale z SOR w promieniu 50 km (50000 metrów)
-      const query = `
-        [out:json][timeout:15];
-        (
-          node["amenity"="hospital"]["emergency"="yes"](around:50000,${userLat},${userLon});
-          way["amenity"="hospital"]["emergency"="yes"](around:50000,${userLat},${userLon});
-          relation["amenity"="hospital"]["emergency"="yes"](around:50000,${userLat},${userLon});
-        );
-        out center;
-      `;
-      
-      const res = await fetch('https://overpass-api.de/api/interpreter', {
-        method: 'POST',
-        body: `data=${encodeURIComponent(query)}`
-      });
-      const data = await res.json();
-
-      if (data.elements && data.elements.length > 0) {
-        let nearest = null;
-        let minDistance = Number.MAX_VALUE;
-
-        // Znajdź fizycznie najbliższy obiekt z pobranych
-        data.elements.forEach(el => {
-          const lat = el.lat || el.center.lat;
-          const lon = el.lon || el.center.lon;
-          const dist = getDistanceKm(userLat, userLon, lat, lon);
-
-          if (dist < minDistance) {
-            minDistance = dist;
-            
-            // Formatowanie adresu z tagów OSM
-            const street = el.tags['addr:street'] || '';
-            const houseNumber = el.tags['addr:housenumber'] || '';
-            const city = el.tags['addr:city'] || '';
-            let fullAddress = `${street} ${houseNumber}, ${city}`.trim().replace(/^,|,$/g, '').trim();
-            
-            nearest = {
-              name: el.tags.name || 'Szpital / SOR (brak nazwy w bazie)',
-              address: fullAddress.length > 3 ? fullAddress : 'Sprawdź na mapie (brak dokładnego adresu)',
-              dist: dist
-            };
-          }
-        });
-
-        setHospitalInfo({
-          name: nearest.name,
-          address: `${nearest.address} (~${nearest.dist.toFixed(1)} km stąd)`
-        });
-      } else {
-        setHospitalInfo({
-          name: 'Brak wyników',
-          address: 'Nie znaleziono oddziału ratunkowego (SOR) w promieniu 50 km.'
-        });
-      }
-      setLocation(placeName || 'Aktualna lokalizacja GPS');
-    } catch (error) {
-      console.error("Błąd pobierania danych OSM:", error);
+    
+    // Symulujemy opóźnienie sieciowe (600ms) dla lepszego wrażenia (UX)
+    setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * fictionalHospitals.length);
       setHospitalInfo({
-        name: 'Błąd połączenia',
-        address: 'Nie udało się pobrać danych. Spróbuj użyć innej wyszukiwarki medycznej.'
+        name: fictionalHospitals[randomIndex].name,
+        address: `${fictionalHospitals[randomIndex].address} (~2.4 km stąd)`
       });
-    } finally {
+      
+      if (placeName) {
+        setLocation(placeName);
+      }
       setLoading(false);
-    }
+    }, 600);
   };
 
   const handleGetGeoLocation = () => {
@@ -104,8 +52,9 @@ export default function LocationPage({ onHome, caseData }) {
 
     setLoading(true);
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        findNearestHospital(position.coords.latitude, position.coords.longitude, 'Twoja lokalizacja GPS');
+      () => {
+        // Ignorujemy prawdziwe koordynaty i losujemy fikcyjny szpital
+        pickRandomHospital('Twoja lokalizacja GPS');
       },
       () => {
         setLoading(false);
@@ -115,28 +64,9 @@ export default function LocationPage({ onHome, caseData }) {
     );
   };
 
-  // 2. Zamiana wpisanego tekstu (np. "Warszawa") na współrzędne przez Nominatim
-  const handleCitySearch = async () => {
+  const handleCitySearch = () => {
     if (location.trim().length < 3) return;
-    
-    setLoading(true);
-    try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=pl&q=${encodeURIComponent(location)}`);
-      const data = await res.json();
-      
-      if (data && data.length > 0) {
-        const { lat, lon, display_name } = data[0];
-        // Gdy mamy współrzędne miasta, szukamy szpitala
-        await findNearestHospital(parseFloat(lat), parseFloat(lon), display_name.split(',')[0]);
-      } else {
-        setHospitalInfo({ name: 'Nie znaleziono miejscowości', address: 'Sprawdź poprawność wpisanej nazwy.' });
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Błąd wyszukiwania miejscowości:", error);
-      setLoading(false);
-      alert('Błąd wyszukiwania miejscowości.');
-    }
+    pickRandomHospital();
   };
 
   // Automatyczne zapytanie o lokalizację przy wejściu

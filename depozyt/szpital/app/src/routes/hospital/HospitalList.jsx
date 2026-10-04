@@ -358,7 +358,6 @@ export default function HospitalList() {
 				</div>
 			)}
 
-			{/* WIDOK: LISTA WSZYSTKICH PRÓBEK */}
 			{step === 'SAMPLE_LIST' && (
 				<div style={{ flex: 1 }}>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
@@ -461,7 +460,6 @@ export default function HospitalList() {
 				</div>
 			)}
 
-			{/* POZOSTAŁE WIDOKI DOSTOSOWANE WIZUALNIE DO NOWEGO STYLU */}
 			{step === 'ADD_SAMPLE' && (
 				<div style={{ flex: 1 }}>
 					<h1
@@ -551,13 +549,12 @@ export default function HospitalList() {
 					style={{
 						flex: 1,
 						display: 'grid',
-						gridTemplateColumns: '1fr 1fr' /* Dwie równe kolumny */,
+						gridTemplateColumns: '1fr 1fr',
 						gap: '20px',
-						alignItems: 'center' /* Środkuje zawartość w pionie */,
+						alignItems: 'center',
 						maxWidth: '1000px',
-						margin: '0 auto' /* Środkuje cały kontener na ekranie */,
+						margin: '0 auto',
 					}}>
-					{/* LEWA STRONA: Komunikat i ID */}
 					<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 						<h1
 							style={{
@@ -575,7 +572,6 @@ export default function HospitalList() {
 						</p>
 					</div>
 
-					{/* PRAWA STRONA: Kod QR i Przyciski */}
 					<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 						<div
 							style={{
@@ -659,7 +655,7 @@ export default function HospitalList() {
 						flex: 1,
 						display: 'flex',
 						flexDirection: 'column',
-						alignItems: 'center' /* <-- TO WYŚRODKUJE CAŁĄ ZAWARTOŚĆ W POZIOMIE */,
+						alignItems: 'center',
 					}}>
 					<h1
 						style={{
@@ -742,8 +738,8 @@ export default function HospitalList() {
 									color: '#101010',
 									boxSizing: 'border-box',
 								}}>
-								<option value='ZAPLOMBOWANO'>Zaplombowano</option>
-								<option value='ZMAGAZYNOWANA'>Zmagazynowane</option>
+								<option value='ZAPLOMBOWANA'>Zaplombowana</option>
+								<option value='ZMAGAZYNOWANA'>Zmagazynowana</option>
 							</select>
 						</div>
 						<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
