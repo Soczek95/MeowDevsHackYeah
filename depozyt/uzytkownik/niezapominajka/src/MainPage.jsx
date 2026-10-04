@@ -83,16 +83,16 @@ export default function MainPage({ onNavigate, onOpenAccess }) {
 
           <div className="text-block" id="o-nas">
             <h3>O nas:</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur mi vitae augue posuere, id ornare sem tincidunt. Sed efficitur pellentesque risus et interdum. Vestibulum tristique sodales turpis. Suspendisse a sagittis diam.</p>
-            <br />
-            <p>Vivamus efficitur, metus non hendrerit vestibulum, leo nibh interdum turpis, in aliquam elit arcu non sapien. Integer vitae rutrum purus. Suspendisse ut blandit mi. Curabitur fringilla sagittis nisl ut efficitur.</p>
-          </div>
+            <p> Jesteśmy zgranym zespołem, który wspólnie realizuje projekty jeszcze od czasów technikum. Dziś wszyscy studiujemy na Politechnice Śląskiej w Gliwicach. Choć różnimy się charakterami, sposobem pracy i spojrzeniem na różne sprawy, dobrze się uzupełniamy. Każde z nas wnosi do zespołu inną perspektywę, dzięki czemu łatwiej nam spojrzeć na problemy z różnych stron i wspólnie znaleźć dobre rozwiązania.
 
+Łączy nas nie tylko zainteresowanie technologią, ale też chęć wykorzystywania jej w praktyczny sposób. Zależy nam na projektach, które odpowiadają na rzeczywiste problemy i mogą mieć znaczenie dla innych osób. Właśnie dlatego zdecydowaliśmy się podjąć tego wyzwania – chcemy stworzyć rozwiązanie, które nie będzie tylko ciekawym projektem technologicznym, ale przede wszystkim może realnie komuś pomóc.
+</p>
+        </div>
           <div className="text-block" id="co-robimy">
             <h3>Co robimy:</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur mi vitae augue posuere, id ornare sem tincidunt. Sed efficitur pellentesque risus et interdum. Vestibulum tristique sodales turpis. Suspendisse a sagittis diam.</p>
-            <br />
-            <p>Vivamus efficitur, metus non hendrerit vestibulum, leo nibh interdum turpis, in aliquam elit arcu non sapien. Integer vitae rutrum purus. Suspendisse ut blandit mi. Curabitur fringilla sagittis nisl ut efficitur.</p>
+            <p>Niezapominajka” to projekt tworzony całkowicie od podstaw podczas tego hackathonu (przed wydarzeniem nie zrealizowano żadnych prac programistycznych). Naszym celem jest dostarczenie działającego prototypu, który obejmuje całą ścieżkę dowodową (end-to-end).
+
+System składa się z: interfejsu dla osoby pokrzywdzonej (zegar dowodowy i mapa szpitali), dedykowanej aplikacji dla szpitali (obsługa kodów QR, plombowanie próbek), bezpiecznego depozytu z podpisanym dziennikiem przechowywania oraz ekranu decyzji chronionego osobistym kluczem.</p>
           </div>
         </section>
       </main>
