@@ -209,7 +209,7 @@ export default function HospitalList() {
             
             {/* Lewa kolumna */}
             <div>
-              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Otwórz sprawę</div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Otwórz sprawę/Sprawdź próbkę</div>
               
               {!isScanning ? (
                 <button 
@@ -239,7 +239,7 @@ export default function HospitalList() {
 
             {/* Prawa kolumna */}
             <div>
-              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Wpisz numer sprawy</div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '20px', fontWeight: '400' }}>Wpisz numer sprawy/próbki</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '500px' }}>
                 <input 
                   type="text"
@@ -264,7 +264,7 @@ export default function HospitalList() {
                     disabled={actionLoading}
                     style={{ background: '#000', color: '#fff', border: 'none', padding: '18px 36px', borderRadius: '40px', fontSize: '0.9rem', fontWeight: '700', letterSpacing: '0.5px', cursor: 'pointer', textTransform: 'uppercase' }}
                   >
-                    {actionLoading ? "PRZETWARZANIE..." : "ZAREJESTRUJ PRÓBKĘ"}
+                    {actionLoading ? "PRZETWARZANIE..." : "WYSZUKAJ"}
                   </button>
                 </div>
               </div>
