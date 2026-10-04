@@ -80,6 +80,7 @@ html, body, #root {
   font-size: 2.8rem;
   font-weight: normal;
   letter-spacing: 1px;
+  color: #fff;
 }
 
 .nav-menu ul {
@@ -136,6 +137,7 @@ html, body, #root {
   margin-bottom: 24px;
   line-height: 1.2;
   white-space: nowrap;
+  color: #fff;
 }
 
 .support-description {
