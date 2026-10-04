@@ -120,16 +120,19 @@ export default function MainPage({ onNavigate, onOpenAccess }) {
 					<div className='text-block' id='o-nas'>
 						<h3>O nas:</h3>
 						<p>
-							{' '}
-							Jesteśmy zgranym zespołem, który wspólnie realizuje projekty jeszcze od czasów technikum. Dziś wszyscy
-							studiujemy na Politechnice Śląskiej w Gliwicach. Choć różnimy się charakterami, sposobem pracy i
-							spojrzeniem na różne sprawy, dobrze się uzupełniamy. Każde z nas wnosi do zespołu inną perspektywę, dzięki
-							czemu łatwiej nam spojrzeć na problemy z różnych stron i wspólnie znaleźć dobre rozwiązania. Łączy nas nie
-							tylko zainteresowanie technologią, ale też chęć wykorzystywania jej w praktyczny sposób. Zależy nam na
-							projektach, które odpowiadają na rzeczywiste problemy i mogą mieć znaczenie dla innych osób. Właśnie
-							dlatego zdecydowaliśmy się podjąć tego wyzwania – chcemy stworzyć rozwiązanie, które nie będzie tylko
-							ciekawym projektem technologicznym, ale przede wszystkim może realnie komuś pomóc.
+							Niezapominajkę tworzy zespół MeowDevs, studenci Politechniki Śląskiej w Gliwicach. Projekt powstał podczas
+							hackathonu HackYeah 2026.
 						</p>
+						<p>
+							Wiele osób po przemocy seksualnej nie jest gotowych, by od razu zgłosić sprawę na policję. Dziś często
+							oznacza to utratę dowodów. Chcemy, żeby dało się je zabezpieczyć w szpitalu bez zgłoszenia, a decyzję o
+							dalszych krokach zostawić osobie pokrzywdzonej, bez presji i pośpiechu.
+						</p>
+						<p>
+							Korzystamy z doświadczeń Szkocji, Anglii i Szwecji, gdzie podobne rozwiązania już działają, oraz z
+							materiałów organizacji pomagających osobom po przemocy.
+						</p>
+						<p>Niezapominajka jest na razie tylko prototypem.</p>
 					</div>
 					<div className='text-block' id='cel'>
 						<h3>Cel:</h3>
